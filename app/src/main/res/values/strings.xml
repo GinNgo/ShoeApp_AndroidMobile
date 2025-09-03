@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">ShoesApp</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
+    <string name="sign_up">Sign up</string>
+    <string name="remember_me">Remember me</string>
+    <string name="sign_in">Sign in</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="don_t_have_account">Don\'t have account?</string>
+    <string name="good_morning">Good Morning 👋</string>
+    <string name="andrew_ainsley">Andrew Ainsley</string>
+    <string name="search">Search</string>
+    <string name="_25_today_s_special">25% Today\'s Special!</string>
+    <string name="_25">25%</string>
+    <string name="today_s_special">Today\'s Special</string>
+    <string name="get_discount_for_every_order_only_valid_for_to_day">Get discount for every order, only valid for to day</string>
+    <string name="adidas">Adidas</string>
+    <string name="nike">Nike</string>
+    <string name="puma">Puma</string>
+</resources>
