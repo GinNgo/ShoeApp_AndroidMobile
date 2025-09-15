@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    >
 
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo_shoeapp"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logo_shoeapp"
         android:supportsRtl="true"
         android:theme="@style/Theme.Material3.DayNight.NoActionBar">
 
@@ -35,8 +35,11 @@
         <!-- RegisterActivity -->
         <activity android:name="ui.auth.RegisterActivity" />
 
-        <!-- HomeActivity (nếu có) -->
+        <!-- HomeActivity-->
         <activity android:name="ui.home.HomeActivity" />
+
+        <!-- ProductDetailActivity-->
+        <activity android:name="ui.product.ProductDetailActivity" />
 
     </application>
 

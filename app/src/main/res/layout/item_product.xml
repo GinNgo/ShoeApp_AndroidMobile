@@ -1,6 +1,7 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
@@ -17,8 +18,10 @@
             android:id="@+id/imgProduct"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_shoe"/>
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_shoe"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/tvName"
@@ -27,7 +30,8 @@
             android:text="Puma Suede Classic"
             android:textStyle="bold"
             android:layout_marginTop="8dp"
-            android:textSize="14sp"/>
+            android:textSize="14sp"
+            tools:ignore="HardcodedText" />
 
         <LinearLayout
             android:orientation="horizontal"
@@ -39,14 +43,16 @@
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:src="@drawable/ic_star"
-                app:tint="@android:color/black"/>
+                app:tint="@android:color/black"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/tvRating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="4.6"
-                android:layout_marginStart="4dp"/>
+                android:layout_marginStart="4dp"
+                tools:ignore="HardcodedText" />
 
             <TextView
                 android:id="@+id/tvSold"
@@ -56,7 +62,8 @@
                 android:background="@drawable/bg_sold"
                 android:padding="2dp"
                 android:text="6,843 sold"
-                android:textSize="12sp"/>
+                android:textSize="12sp"
+                tools:ignore="HardcodedText" />
         </LinearLayout>
 
         <TextView
@@ -65,6 +72,7 @@
             android:layout_height="wrap_content"
             android:text="$120.00"
             android:textStyle="bold"
-            android:layout_marginTop="4dp"/>
+            android:layout_marginTop="4dp"
+            tools:ignore="HardcodedText" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

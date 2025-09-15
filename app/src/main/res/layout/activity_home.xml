@@ -95,6 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
+            android:layout_marginTop="5dp"
             app:cardBackgroundColor="@android:color/holo_red_light"
             app:cardCornerRadius="12dp">
 
@@ -167,7 +168,8 @@
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="80dp"
                     android:layout_height="40dp"
-                    android:text="@string/nike" />
+                    android:text="All"
+                    tools:ignore="HardcodedText" />
 
                 <Button
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -176,6 +178,24 @@
                     android:layout_marginStart="8dp"
                     android:text="@string/adidas" />
 
+                <Button
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/puma" />
+                <Button
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/nike" />
+                <Button
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/puma" />
                 <Button
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="80dp"

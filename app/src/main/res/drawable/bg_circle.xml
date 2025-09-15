@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <!-- Màu nền mặc định (có thể override bằng backgroundTint) -->
+    <solid android:color="#FFFFFF" />
+
+    <!-- Viền -->
+    <stroke
+        android:width="2dp"
+        android:color="#000000" />
+
+    <!-- Kích thước tối thiểu (optional) -->
+    <size
+        android:width="32dp"
+        android:height="32dp" />
+</shape>

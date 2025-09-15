@@ -9,8 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.shoesapp.R
 import com.example.shoesapp.model.Product
 
-class ProductAdapter(private val productList: List<Product>) :
-    RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
+class ProductAdapter(private val productList: List<Product>,
+                     private val onItemClick: (Product) -> Unit   // callback
+) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
     class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imgProduct: ImageView = itemView.findViewById(R.id.imgProduct)
@@ -31,8 +32,15 @@ class ProductAdapter(private val productList: List<Product>) :
         holder.imgProduct.setImageResource(product.imageResId)
         holder.tvName.text = product.name
         holder.tvPrice.text = product.price
-        holder.tvRating.text = "⭐ ${product.rating}"
+        holder.tvRating.text = buildString {
+            append("⭐")
+            append(product.rating)
+        }
         holder.tvSold.text = product.sold
+        // Click cả itemView
+        holder.itemView.setOnClickListener {
+            onItemClick(product)
+        }
     }
 
     override fun getItemCount(): Int = productList.size

@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+    <FrameLayout
+        android:id="@+id/layoutImageContainer"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Ảnh sản phẩm -->
+        <ImageView
+            android:id="@+id/imgProduct"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_shoe_adidas10"
+            android:scaleType="centerInside"
+            android:background="#E9E9E9"
+
+            tools:ignore="ContentDescription" />
+
+        <!-- Nút back (đè lên trên ảnh) -->
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_arrow_back"
+            android:scaleType="centerInside"
+            android:padding="8dp"
+            android:layout_margin="10dp"
+            android:layout_gravity="start|top"
+            android:background="#E9E9E9"
+            app:tint="@android:color/black"
+            tools:ignore="ContentDescription" />
+    </FrameLayout>
+
+
+    <!-- Tên sản phẩm -->
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/suga_leather_shoes"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginStart="16dp"
+        app:layout_constraintTop_toBottomOf="@id/layoutImageContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnFavorite"
+        android:layout_marginTop="12dp"/>
+
+    <!-- Favorite -->
+    <ImageButton
+        android:id="@+id/btnFavorite"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@android:color/transparent"
+        android:backgroundTint="@color/black"
+        android:src="@drawable/ic_favorite_border"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toTopOf="@id/txtTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="ContentDescription" />
+    <LinearLayout
+        android:id="@+id/linearLayoutSold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/txtTitle"
+        app:layout_constraintStart_toStartOf="@id/txtTitle"
+        android:layout_marginTop="8dp"
+        >
+    <!-- Sold Tag -->
+    <TextView
+        android:id="@+id/txtSold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="7,483 sold"
+        android:textSize="12sp"
+        android:background="@drawable/bg_tag"
+        android:padding="4dp"
+        android:layout_marginEnd="12dp"
+        tools:ignore="HardcodedText" />
+
+    <!-- Rating -->
+    <TextView
+        android:id="@+id/txtRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="⭐ 4.7 (5,387 reviews)"
+        android:textSize="12sp"
+        android:textColor="@android:color/darker_gray"
+        tools:ignore="HardcodedText" />
+    </LinearLayout>
+    <!-- Description -->
+    <TextView
+        android:id="@+id/txtDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit..."
+        android:textSize="14sp"
+        android:textColor="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@id/linearLayoutSold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        tools:ignore="HardcodedText" />
+
+    <!-- Size -->
+    <TextView
+        android:id="@+id/txtSizeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Size"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/txtDescription"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        tools:ignore="HardcodedText" />
+
+    <LinearLayout
+        android:id="@+id/layoutSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/txtSizeLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp">
+
+        <TextView
+            android:id="@+id/btnSize39"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@drawable/bg_circle_selector"
+            android:gravity="center"
+            android:text="39"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:includeFontPadding="false"
+            android:clickable="true"
+            android:focusable="true"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/btnSize40"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_circle_selector"
+            android:gravity="center"
+            android:text="40"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:includeFontPadding="false"
+            android:clickable="true"
+            android:focusable="true"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/btnSize41"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_circle_selector"
+            android:gravity="center"
+            android:text="41"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:includeFontPadding="false"
+            android:clickable="true"
+            android:focusable="true"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/btnSize42"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_circle_selector"
+            android:gravity="center"
+            android:text="42"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:includeFontPadding="false"
+            android:clickable="true"
+            android:focusable="true"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+
+    <!-- Color -->
+    <TextView
+        android:id="@+id/txtColorLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Color"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/layoutSize"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        tools:ignore="HardcodedText" />
+
+    <LinearLayout
+        android:id="@+id/layoutColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@id/txtColorLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp">
+
+        <View
+            android:id="@+id/colorBrown"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/bg_circle"
+            android:backgroundTint="#6B4F3B"/>
+        <View
+            android:id="@+id/colorGray"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/bg_circle"
+            android:backgroundTint="#808080"/>
+        <View
+            android:id="@+id/colorLightGray"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/bg_circle"
+            android:backgroundTint="#C0C0C0"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="18dp"
+        app:layout_constraintTop_toBottomOf="@id/layoutColor"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp">
+        <!-- Quantity -->
+        <TextView
+            android:id="@+id/txtQuantityLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Quantity"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText"
+            android:layout_marginEnd="14dp"/>
+
+        <LinearLayout
+            android:id="@+id/layoutQuantityUpdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/bg_quantity"
+            android:padding="4dp"
+            app:layout_constraintTop_toBottomOf="@id/txtQuantityLabel"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageButton
+                android:id="@+id/btnMinus"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_minus"
+                android:background="@drawable/bg_quantity"
+                app:tint="@android:color/black"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/txtQuantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2"
+                android:textSize="18sp"
+                android:layout_marginHorizontal="12dp"
+                tools:ignore="HardcodedText" />
+
+            <ImageButton
+                android:id="@+id/btnPlus"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_plus"
+                android:background="@drawable/bg_quantity"
+                app:tint="@android:color/black"
+                tools:ignore="ContentDescription" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Price + Add to Cart -->
+    <LinearLayout
+        android:id="@+id/layoutBottom"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total price"
+                android:textSize="12sp"
+                android:textColor="@android:color/darker_gray"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/txtPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$750.00"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnAddToCart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/black"
+            android:text="Add to Cart"
+            android:textColor="@android:color/white"
+            android:paddingHorizontal="24dp"
+            android:paddingVertical="12dp"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
