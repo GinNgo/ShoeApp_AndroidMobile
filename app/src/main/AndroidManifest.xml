@@ -24,7 +24,7 @@
 
         <!-- LoginActivity -->
         <activity
-            android:name="ui.auth.LoginActivity"
+            android:name="ui.auth.ProfileActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,6 +38,7 @@
         <!-- HomeActivity (nếu có) -->
         <activity android:name="ui.home.HomeActivity" />
 
+        <activity android:name="ui.auth.LoginActivity"/>
     </application>
 
 </manifest>
