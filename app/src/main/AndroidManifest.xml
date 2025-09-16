@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
         android:allowBackup="true"
@@ -25,6 +25,14 @@
         <!-- LoginActivity -->
         <activity
             android:name="ui.auth.LoginActivity"
+            android:exported="true" />
+
+        <!-- RegisterActivity -->
+        <activity android:name="ui.auth.RegisterActivity" />
+
+        <!-- HomeActivity (nếu có) -->
+        <activity
+            android:name="ui.home.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,15 +40,16 @@
             </intent-filter>
         </activity>
 
-        <!-- RegisterActivity -->
-        <activity android:name="ui.auth.RegisterActivity" />
-
-        <!-- HomeActivity-->
-        <activity android:name="ui.home.HomeActivity" />
+        <activity
+            android:name="ui.auth.ProfileActivity"
+            android:exported="true" />
 
         <!-- ProductDetailActivity-->
         <activity android:name="ui.product.ProductDetailActivity" />
 
+        <activity
+            android:name="ui.home.CartActivity"
+            android:exported="true" />
     </application>
 
 </manifest>

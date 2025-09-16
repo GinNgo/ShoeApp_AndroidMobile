@@ -18,4 +18,17 @@
     <string name="nike">Nike</string>
     <string name="puma">Puma</string>
     <string name="suga_leather_shoes">Suga Leather Shoes</string>
+    <string name="full_name">Full Name</string>
+    <string name="nickname">Nickname</string>
+    <string name="date">date</string>
+    <string name="phone">phone</string>
+    <string name="dateBirth">Date</string>
+    <string name="avatar">avatar</string>
+    <string name="Phone">Phone</string>
+    <string name="Continue">Continue</string>
+    <string name="header">Header</string>
+    <string name="fill_your_profile">Fill Your Profile</string>
+    <string name="my_cart">My Cart</string>
+    <string name="color">Color</string>
+    <string name="minus">-</string>
 </resources>
