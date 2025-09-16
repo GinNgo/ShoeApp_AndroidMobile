@@ -27,4 +27,7 @@
     <string name="Continue">Continue</string>
     <string name="header">Header</string>
     <string name="fill_your_profile">Fill Your Profile</string>
+    <string name="my_cart">My Cart</string>
+    <string name="color">Color</string>
+    <string name="minus">-</string>
 </resources>

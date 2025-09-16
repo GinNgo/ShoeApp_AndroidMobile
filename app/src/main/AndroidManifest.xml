@@ -13,24 +13,24 @@
         android:theme="@style/Theme.Material3.DayNight.NoActionBar">
 
         <!-- Activity khởi động đầu tiên -->
-<!--        <activity-->
-<!--            android:name=".MainActivity"-->
-<!--            android:exported="true">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
+        <!--        <activity-->
+        <!--            android:name=".MainActivity"-->
+        <!--            android:exported="true">-->
+        <!--            <intent-filter>-->
+        <!--                <action android:name="android.intent.action.MAIN" />-->
+        <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+        <!--            </intent-filter>-->
+        <!--        </activity>-->
 
         <!-- LoginActivity -->
-        <activity
-            android:name="ui.auth.ProfileActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <!--        <activity-->
+        <!--            android:name="ui.auth.LoginActivity"-->
+        <!--            android:exported="true">-->
+        <!--            <intent-filter>-->
+        <!--                <action android:name="android.intent.action.MAIN" />-->
+        <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+        <!--            </intent-filter>-->
+        <!--        </activity>-->
 
         <!-- RegisterActivity -->
         <activity android:name="ui.auth.RegisterActivity" />
@@ -38,7 +38,18 @@
         <!-- HomeActivity (nếu có) -->
         <activity android:name="ui.home.HomeActivity" />
 
-        <activity android:name="ui.auth.LoginActivity"/>
+        <activity
+            android:name="ui.auth.ProfileActivity"
+            android:exported="true" />
+
+        <activity
+            android:name="ui.home.CartActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
