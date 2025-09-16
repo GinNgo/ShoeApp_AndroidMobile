@@ -22,21 +22,22 @@
         <!--            </intent-filter>-->
         <!--        </activity>-->
 
-        <!-- LoginActivity -->
-        <!--        <activity-->
-        <!--            android:name="ui.auth.LoginActivity"-->
-        <!--            android:exported="true">-->
-        <!--            <intent-filter>-->
-        <!--                <action android:name="android.intent.action.MAIN" />-->
-        <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-        <!--            </intent-filter>-->
-        <!--        </activity>-->
+        <activity
+            android:name="ui.auth.LoginActivity"
+            android:exported="true" />
 
         <!-- RegisterActivity -->
         <activity android:name="ui.auth.RegisterActivity" />
 
         <!-- HomeActivity (nếu có) -->
-        <activity android:name="ui.home.HomeActivity" />
+        <activity
+            android:name="ui.home.HomeActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name="ui.auth.ProfileActivity"
@@ -44,12 +45,7 @@
 
         <activity
             android:name="ui.home.CartActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="true" />
     </application>
 
 </manifest>

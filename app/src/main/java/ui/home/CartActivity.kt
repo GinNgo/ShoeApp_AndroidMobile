@@ -3,12 +3,12 @@ package ui.home
 import android.os.Bundle
 import android.widget.GridView
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import com.example.shoesapp.R
 import com.example.shoesapp.model.Product
 import model.GridProductAdapter
+import ui.BaseActivity
 
-class CartActivity : AppCompatActivity() {
+class CartActivity : BaseActivity() {
 
     private lateinit var productList: ArrayList<Product>
 
@@ -39,5 +39,7 @@ class CartActivity : AppCompatActivity() {
         val grid = GridProductAdapter(this, productList);
         val cart = findViewById<GridView>(R.id.grid_view);
         cart.adapter = grid
+
+       handleNavigation(R.id.nav_cart)
     }
 }

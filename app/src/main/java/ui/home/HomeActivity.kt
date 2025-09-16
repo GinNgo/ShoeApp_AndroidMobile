@@ -1,8 +1,9 @@
 package ui.home
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
@@ -10,8 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.shoesapp.R
 import com.example.shoesapp.adapter.ProductAdapter
 import com.example.shoesapp.model.Product
+import ui.BaseActivity
+import ui.auth.ProfileActivity
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : BaseActivity() {
 
     private lateinit var recyclerProducts: RecyclerView
     private lateinit var productAdapter: ProductAdapter
@@ -51,5 +54,18 @@ class HomeActivity : AppCompatActivity() {
         productAdapter = ProductAdapter(productList)
         recyclerProducts.layoutManager = GridLayoutManager(this, 2) // Grid 2 cột
         recyclerProducts.adapter = productAdapter
+
+        onProfile()
+        handleNavigation(R.id.nav_home)
+    }
+
+    private fun onProfile(){
+        val profile = findViewById<ImageView>(R.id.profile_form)
+        // Set click event
+        profile.setOnClickListener {
+            // Navigate to CartActivity
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
