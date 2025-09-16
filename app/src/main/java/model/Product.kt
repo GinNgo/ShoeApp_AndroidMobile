@@ -8,5 +8,5 @@ data class Product(
     val rating: String,
     val sold: String,
     val imageResId: Int,
-    val description: String
+    val description: String =""
 ): Serializable
