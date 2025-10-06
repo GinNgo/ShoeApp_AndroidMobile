@@ -1,4 +1,4 @@
-package model
+package adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,7 +8,9 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.shoesapp.R
-import com.example.shoesapp.model.Product
+import model.Product
+
+
 
 class GridProductAdapter(context: Context, private val list: List<Product>) :
     ArrayAdapter<Product>(context, 0, list) {
@@ -24,8 +26,14 @@ class GridProductAdapter(context: Context, private val list: List<Product>) :
 
         model?.let {
             textView.text = it.name
-            imageView.setImageResource(it.imageResId)
-            priceView.text = it.price
+            priceView.text = "${it.price} $"
+
+            val resId = it.getPrimaryImageResId(context)
+            if (resId != 0) {
+                imageView.setImageResource(resId)
+            } else {
+                imageView.setImageResource(R.drawable.no_image)
+            }
         }
 
         return itemView

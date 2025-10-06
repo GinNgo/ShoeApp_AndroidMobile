@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "365050764297",
+    "project_id": "btandroid-61006",
+    "storage_bucket": "btandroid-61006.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:365050764297:android:baa2b33609eccff0a1acd8",
+        "android_client_info": {
+          "package_name": "com.example.shoesapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMyBO8JFqsocNWjgUicjjJDNbWAbqRKyU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -3,201 +3,142 @@ package ui.home
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoesapp.R
-import com.example.shoesapp.adapter.ProductAdapter
-import com.example.shoesapp.model.Product
+import adapter.ProductAdapter
+import model.Product
+import model.ProductImage
+import service.ProductService
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import ui.BaseActivity
 import ui.auth.ProfileActivity
 import ui.product.ProductDetailActivity
+import android.util.Log
 
 class HomeActivity : BaseActivity() {
 
     private lateinit var recyclerProducts: RecyclerView
     private lateinit var productAdapter: ProductAdapter
-    private lateinit var productList: ArrayList<Product>
+    private var productList = ArrayList<Product>() // ✅ init luôn
+    private val productService = ProductService()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_home)
 
-        // Xử lý padding cho status bar/navigation bar
+        // Padding cho status bar/navigation bar
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        // Ánh xạ RecyclerView
-        recyclerProducts = findViewById(R.id.recyclerProducts)
-
         // Fake data sản phẩm
-        productList = ArrayList()
-        productList.add(
-            Product(
-                "Puma Suede Classic",
-                "$120.00",
-                "4.6",
-                "6,843 sold",
-                R.drawable.ic_shoe_puma,
-                "Giày sneaker cổ điển với chất liệu da lộn mềm mại, phong cách retro."
-            )
-        )
-        productList.add(
-            Product(
-                "Nike Air Max 270",
-                "$150.00",
-                "4.8",
-                "12,345 sold",
-                R.drawable.ic_shoe,
-                "Nike Air Max 270 với đế Air lớn, êm ái và phong cách thể thao hiện đại."
-            )
-        )
-        productList.add(
-            Product(
-                "Adidas Ultraboost",
-                "$180.00",
-                "4.9",
-                "8,765 sold",
-                R.drawable.ic_shoe_adidas,
-                "Ultraboost mang lại sự thoải mái tối đa, thiết kế ôm chân và đế Boost đàn hồi."
-            )
-        )
-        productList.add(
-            Product(
-                "Converse Chuck Taylor",
-                "$90.00",
-                "4.5",
-                "15,000 sold",
-                R.drawable.ic_shoe2,
-                "Giày Converse Chuck Taylor cổ điển, phù hợp với mọi phong cách thời trang."
-            )
-        )
-        productList.add(
-            Product(
-                "New Balance 574",
-                "$110.00",
-                "4.7",
-                "9,432 sold",
-                R.drawable.ic_shoe3,
-                "Thiết kế retro pha chút hiện đại, êm ái khi đi bộ và phù hợp đi hàng ngày."
-            )
-        )
-        productList.add(
-            Product(
-                "Vans Old Skool",
-                "$85.00",
-                "4.6",
-                "11,289 sold",
-                R.drawable.ic_shoe5,
-                "Vans Old Skool biểu tượng với đường sọc side stripe, phong cách streetwear."
-            )
-        )
-        productList.add(
-            Product(
-                "Nike Air Force 1",
-                "$100.00",
-                "4.8",
-                "20,542 sold",
-                R.drawable.ic_shoe6,
-                "Air Force 1 huyền thoại, thiết kế da trắng đơn giản nhưng cực kỳ phong cách."
-            )
-        )
-        productList.add(
-            Product(
-                "Adidas Stan Smith",
-                "$95.00",
-                "4.7",
-                "13,872 sold",
-                R.drawable.ic_shoe_adidas16,
-                "Stan Smith tối giản, dễ phối đồ, một trong những đôi giày nổi tiếng nhất của Adidas."
-            )
-        )
-        productList.add(
-            Product(
-                "Reebok Classic Leather",
-                "$80.00",
-                "4.5",
-                "7,654 sold",
-                R.drawable.ic_shoe8,
-                "Phong cách retro, chất liệu da mềm, thích hợp mang cả ngày."
-            )
-        )
-        productList.add(
-            Product(
-                "Asics Gel-Kayano 27",
-                "$160.00",
-                "4.9",
-                "5,431 sold",
-                R.drawable.ic_shoe9,
-                "Dòng giày chạy bộ cao cấp với công nghệ Gel giảm chấn đặc trưng."
-            )
-        )
-        productList.add(
-            Product(
-                "Nike Dunk Low",
-                "$140.00",
-                "4.8",
-                "18,245 sold",
-                R.drawable.ic_shoe10,
-                "Nike Dunk Low với phối màu đa dạng, cực hot trong giới trẻ streetwear."
-            )
-        )
-        productList.add(
-            Product(
-                "Adidas Yeezy Boost 350",
-                "$220.00",
-                "4.9",
-                "9,876 sold",
-                R.drawable.ic_shoe_adidas10,
-                "Thiết kế độc đáo bởi Kanye West, cực kỳ êm ái và cá tính."
-            )
-        )
-        productList.add(
-            Product(
-                "Fila Disruptor II",
-                "$75.00",
-                "4.4",
-                "6,432 sold",
-                R.drawable.ic_shoe12,
-                "Phong cách chunky sneaker với đế răng cưa nổi bật."
-            )
-        )
-        productList.add(
-            Product(
-                "Jordan 1 Retro High",
-                "$200.00",
-                "5.0",
-                "22,765 sold",
-                R.drawable.ic_shoe_adidas9,
-                "Huyền thoại Jordan 1, đôi giày gắn liền với lịch sử bóng rổ và sneakerhead."
-            )
-        )
+        fun seedProducts() {
+            val products = listOf(
+                Product(
+                    name = "Puma Suede Classic",
+                    description = "Giày sneaker cổ điển với chất liệu da lộn mềm mại, phong cách retro.",
+                    price = 120.0, brand = "Puma",
+                    images = listOf(ProductImage("ic_shoe_puma", true)) ),
+                Product( name = "Nike Air Max 270",
+                    description = "Nike Air Max 270 với đế Air lớn, êm ái và phong cách thể thao hiện đại.",
+                    price = 150.0, brand = "Nike",
+                    images = listOf(ProductImage("ic_shoe", true)) ),
+                Product( name = "Adidas Ultraboost",
+                    description = "Ultraboost mang lại sự thoải mái tối đa, thiết kế ôm chân và đế Boost đàn hồi.",
+                    price = 180.0, brand = "Adidas",
+                    images = listOf(ProductImage("ic_shoe_adidas", true)) ),
+                Product( name = "Converse Chuck Taylor",
+                    description = "Giày Converse Chuck Taylor cổ điển, phù hợp với mọi phong cách thời trang.",
+                    price = 90.0, brand = "Converse",
+                    images = listOf(ProductImage("ic_shoe2", true)) ),
+                Product( name = "New Balance 574",
+                    description = "Thiết kế retro pha chút hiện đại, êm ái khi đi bộ và phù hợp đi hàng ngày.",
+                    price = 110.0, brand = "New Balance",
+                    images = listOf(ProductImage("ic_shoe3", true)) ),
+                Product( name = "Vans Old Skool",
+                    description = "Vans Old Skool biểu tượng với đường sọc side stripe, phong cách streetwear.",
+                    price = 85.0, brand = "Vans",
+                    images = listOf(ProductImage("ic_shoe5", true)) ),
+                Product( name = "Nike Air Force 1",
+                    description = "Air Force 1 huyền thoại, thiết kế da trắng đơn giản nhưng cực kỳ phong cách.",
+                    price = 100.0, brand = "Nike",
+                    images = listOf(ProductImage("ic_shoe6", true)) ),
+                Product( name = "Adidas Stan Smith",
+                    description = "Stan Smith tối giản, dễ phối đồ, một trong những đôi giày nổi tiếng nhất của Adidas.",
+                    price = 95.0, brand = "Adidas",
+                    images = listOf(ProductImage("ic_shoe_adidas16", true)) ),
+                Product( name = "Reebok Classic Leather",
+                    description = "Phong cách retro, chất liệu da mềm, thích hợp mang cả ngày.",
+                    price = 80.0, brand = "Reebok",
+                    images = listOf(ProductImage("ic_shoe8", true)) ),
+                Product( name = "Asics Gel-Kayano 27",
+                    description = "Dòng giày chạy bộ cao cấp với công nghệ Gel giảm chấn đặc trưng.",
+                    price = 160.0, brand = "Asics", images = listOf(ProductImage("ic_shoe9", true)) ),
+                Product( name = "Nike Dunk Low",
+                    description = "Nike Dunk Low với phối màu đa dạng, cực hot trong giới trẻ streetwear.",
+                    price = 140.0, brand = "Nike", images = listOf(ProductImage("ic_shoe10", true)) ),
+                Product( name = "Adidas Yeezy Boost 350",
+                    description = "Thiết kế độc đáo bởi Kanye West, cực kỳ êm ái và cá tính.",
+                    price = 220.0, brand = "Adidas", images = listOf(ProductImage("ic_shoe_adidas10", true)) ),
+                Product( name = "Fila Disruptor II", description = "Phong cách chunky sneaker với đế răng cưa nổi bật.",
+                    price = 75.0, brand = "Fila", images = listOf(ProductImage("ic_shoe12", true)) ),
+                Product( name = "Jordan 1 Retro High",
+                    description = "Huyền thoại Jordan 1, đôi giày gắn liền với lịch sử bóng rổ và sneakerhead.",
+                    price = 200.0, brand = "Nike Jordan",
+                    images = listOf(ProductImage("ic_shoe_adidas9", true)) ) )
+        // 🔹 Gọi coroutine để upload từng sản phẩm
+        lifecycleScope.launch {
+            try {
+                for (product in products) {
+                    productService.addProduct(product)
+                }
+                Toast.makeText(this@HomeActivity, "Thêm thành công", Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) { Log.e("FirestoreError", "Lỗi khi thêm product", e)
+                Toast.makeText(this@HomeActivity, "Lỗi: ${e.message}", Toast.LENGTH_LONG).show() }
+            }
+        }
+//     seedProducts();
 
+        recyclerProducts = findViewById(R.id.recyclerProducts)
+        recyclerProducts.layoutManager = GridLayoutManager(this, 2)
 
         // Setup Adapter
         productAdapter = ProductAdapter(productList) { product ->
+            // 🔹 Khi click 1 sản phẩm → chuyển qua màn chi tiết
             val intent = Intent(this, ProductDetailActivity::class.java)
-            intent.putExtra("product", product) // truyền qua intent
+            intent.putExtra("product", product) // Product cần Parcelable
             startActivity(intent)
         }
-        recyclerProducts.layoutManager = GridLayoutManager(this, 2) // Grid 2 cột
         recyclerProducts.adapter = productAdapter
+
+        // 🔹 Gọi Firestore để load danh sách sản phẩm
+        lifecycleScope.launch {
+            try {
+                val products = productService.getAllProducts()
+                productList.clear()
+                productList.addAll(products)
+                productAdapter.notifyDataSetChanged()
+            } catch (e: Exception) {
+                Log.e("FirestoreError", "Lỗi load products", e)
+                Toast.makeText(this@HomeActivity, "Lỗi tải sản phẩm: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+        }
 
         onProfile()
         handleNavigation(R.id.nav_home)
     }
 
-    private fun onProfile(){
+    private fun onProfile() {
         val profile = findViewById<ImageView>(R.id.profile_form)
-        // Set click event
         profile.setOnClickListener {
-            // Navigate to CartActivity
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }

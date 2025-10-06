@@ -10,8 +10,13 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.shoesapp.R
 import ui.home.HomeActivity
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+import model.User
+import service.UserService
 
 class LoginActivity : AppCompatActivity() {
+    private val userService = UserService()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -21,6 +26,27 @@ class LoginActivity : AppCompatActivity() {
         tvSignUp.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
+        }
+
+        // 🔹 Thêm user mới
+        lifecycleScope.launch() {
+            try {
+                val user = User(
+                    username = "tuanan",
+                    email = "ada@gmail.com",
+                    passwordHash = "12345hash",
+                    firstName = "Ada",
+                    lastName = "Lovelace",
+                    role = 1
+                )
+
+                // 🟢 Gọi service để thêm user
+                userService.addUser(user)
+
+                println("✅ User thêm thành công!")
+            } catch (e: Exception) {
+                println("❌ Lỗi khi thêm user: ${e.message}")
+            }
         }
         var tvSignIn = findViewById<Button>(R.id.btnLogin)
         tvSignIn.setOnClickListener {
