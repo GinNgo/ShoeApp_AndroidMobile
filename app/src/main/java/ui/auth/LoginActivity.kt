@@ -43,6 +43,7 @@ class LoginActivity : AppCompatActivity() {
                 val userValid = userService.getUserByEmail(email)
                 if(userValid != null && userValid.passwordHash == password){
                     val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+                    intent.putExtra("email", email)
                     startActivity(intent)
                 }else{
                     Toast.makeText(this@LoginActivity, "Email hoặc password không đúng", Toast.LENGTH_SHORT).show()

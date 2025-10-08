@@ -20,6 +20,7 @@ import ui.BaseActivity
 import ui.auth.ProfileActivity
 import ui.product.ProductDetailActivity
 import android.util.Log
+import android.widget.TextView
 
 class HomeActivity : BaseActivity() {
 
@@ -32,6 +33,10 @@ class HomeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_home)
+
+        val tvName = findViewById<TextView>(R.id.tvName)
+        val name = intent.getStringExtra("email") ?: "No name"
+        tvName.text = name
 
         // Padding cho status bar/navigation bar
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -64,6 +69,8 @@ class HomeActivity : BaseActivity() {
                         images = p.images // danh sách ảnh của fen
                     )
                 }
+                Log.d("DEBUG", "Số sản phẩm load: ${products.size}")
+                products.forEach { Log.d("DEBUG", it.name) }
                 productList.clear()
                 productList.addAll(products)
                 productAdapter.notifyDataSetChanged()

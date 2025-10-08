@@ -4,6 +4,7 @@ import android.content.Context
 
 import java.io.Serializable
 import java.sql.Timestamp
+import java.util.Date
 
 data class ProductImage(
     val imageUrl: String = "",
@@ -16,7 +17,7 @@ data class Product(
     val description: String = "",
     val price: Double = 0.0,
     val stockQuantity: Int = 0,
-    val createdAt: Timestamp? = null,
+    val createdAt: Date? = null,
     val categoryId: String = "",
     val brand: String? = null,
     val material: String? = null,
