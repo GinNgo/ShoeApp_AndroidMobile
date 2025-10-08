@@ -13,5 +13,5 @@ data class User(
     val shippingAddress: String? = null,
     val billingAddress: String? = null,
     val phoneNumber: String? = null,
-    val role: Number = 0
+    val role: Int = 0
 )

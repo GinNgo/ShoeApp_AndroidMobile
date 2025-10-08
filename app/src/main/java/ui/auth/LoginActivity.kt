@@ -3,7 +3,9 @@ package ui.auth
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -17,6 +19,7 @@ import service.UserService
 
 class LoginActivity : AppCompatActivity() {
     private val userService = UserService()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -28,31 +31,25 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // 🔹 Thêm user mới
-        lifecycleScope.launch() {
-            try {
-                val user = User(
-                    username = "tuanan",
-                    email = "ada@gmail.com",
-                    passwordHash = "12345hash",
-                    firstName = "Ada",
-                    lastName = "Lovelace",
-                    role = 1
-                )
-
-                // 🟢 Gọi service để thêm user
-                userService.addUser(user)
-
-                println("✅ User thêm thành công!")
-            } catch (e: Exception) {
-                println("❌ Lỗi khi thêm user: ${e.message}")
-            }
-        }
         var tvSignIn = findViewById<Button>(R.id.btnLogin)
         tvSignIn.setOnClickListener {
-            var intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
+            lifecycleScope.launch {
+                val etEmail = findViewById<EditText>(R.id.etEmail)
+                val etPassword = findViewById<EditText>(R.id.etPassword)
+
+                val email = etEmail.text.toString().trim()
+                val password = etPassword.text.toString().trim()
+
+                val userValid = userService.getUserByEmail(email)
+                if(userValid != null && userValid.passwordHash == password){
+                    val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+                    startActivity(intent)
+                }else{
+                    Toast.makeText(this@LoginActivity, "Email hoặc password không đúng", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
+
         // Căn lề cho status/navigation bar
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

@@ -1,9 +1,10 @@
 package model
 
 import android.content.Context
-import com.google.firebase.Timestamp
 
 import java.io.Serializable
+import java.sql.Timestamp
+
 data class ProductImage(
     val imageUrl: String = "",
     val isPrimary: Boolean = false
