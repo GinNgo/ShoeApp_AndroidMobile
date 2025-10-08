@@ -29,25 +29,25 @@ class LoginActivity : AppCompatActivity() {
         }
 
         // 🔹 Thêm user mới
-        lifecycleScope.launch() {
-            try {
-                val user = User(
-                    username = "tuanan",
-                    email = "ada@gmail.com",
-                    passwordHash = "12345hash",
-                    firstName = "Ada",
-                    lastName = "Lovelace",
-                    role = 1
-                )
-
-                // 🟢 Gọi service để thêm user
-                userService.addUser(user)
-
-                println("✅ User thêm thành công!")
-            } catch (e: Exception) {
-                println("❌ Lỗi khi thêm user: ${e.message}")
-            }
-        }
+//        lifecycleScope.launch() {
+//            try {
+//                val user = User(
+//                    username = "tuanan",
+//                    email = "ada@gmail.com",
+//                    passwordHash = "12345hash",
+//                    firstName = "Ada",
+//                    lastName = "Lovelace",
+//                    role = 1
+//                )
+//
+//                // 🟢 Gọi service để thêm user
+//                userService.addUser(user)
+//
+//                println("✅ User thêm thành công!")
+//            } catch (e: Exception) {
+//                println("❌ Lỗi khi thêm user: ${e.message}")
+//            }
+//        }
         var tvSignIn = findViewById<Button>(R.id.btnLogin)
         tvSignIn.setOnClickListener {
             var intent = Intent(this, HomeActivity::class.java)

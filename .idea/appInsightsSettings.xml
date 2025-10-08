@@ -10,9 +10,9 @@
               <option name="connection">
                 <ConnectionSetting>
                   <option name="appId" value="com.example.shoesapp" />
-                  <option name="mobileSdkAppId" value="1:715227415289:android:53d728cd20ca5bb8f6d828" />
-                  <option name="projectId" value="shoeapp-f826b" />
-                  <option name="projectNumber" value="715227415289" />
+                  <option name="mobileSdkAppId" value="1:365050764297:android:baa2b33609eccff0a1acd8" />
+                  <option name="projectId" value="btandroid-61006" />
+                  <option name="projectNumber" value="365050764297" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
