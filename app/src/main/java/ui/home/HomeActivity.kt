@@ -55,10 +55,15 @@ class HomeActivity : BaseActivity() {
         // 🔹 Gọi Firestore để load danh sách sản phẩm
         lifecycleScope.launch {
             try {
-                val products = productService.getAllProducts()
-                Log.d("DEBUG", "Số sản phẩm load: ${products.size}")
-                products.forEach { Log.d("DEBUG", it.name) }
-
+                val products = productService.getAllProducts().map { p ->
+                    Product(
+                        name = p.name,
+                        description = p.description,
+                        price = p.price,
+                        brand = p.brand,
+                        images = p.images // danh sách ảnh của fen
+                    )
+                }
                 productList.clear()
                 productList.addAll(products)
                 productAdapter.notifyDataSetChanged()
