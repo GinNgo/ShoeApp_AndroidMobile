@@ -1,0 +1,32 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarCategory"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorSurface"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:navigationIconTint="@color/black"
+        app:title="Quản lý danh mục"
+        app:titleCentered="true" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerCategory"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        app:srcCompat="@drawable/ic_add"
+        android:contentDescription="Thêm danh mục" />
+</LinearLayout>

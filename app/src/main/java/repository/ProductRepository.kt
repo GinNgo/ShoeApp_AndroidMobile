@@ -15,6 +15,10 @@ class ProductRepository(
             product?.copy(id = doc.id)
         }
     }
+    suspend fun getSizeProduct(): Int {
+        val docs = firestore.getAll(collectionName)
+        return docs.size
+    }
 
     suspend fun addProduct(product: Product) {
         val data = hashMapOf(

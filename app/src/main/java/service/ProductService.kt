@@ -18,7 +18,15 @@ class ProductService(
             emptyList()
         }
     }
-
+    suspend fun getSizeProduct(): Int = withContext(Dispatchers.IO) {
+        try {
+            repository.getSizeProduct()
+        }
+        catch (e: Exception) {
+            e.printStackTrace()
+            0
+        }
+    }
     // 🟢 Thêm sản phẩm
     suspend fun addProduct(product: Product): Boolean = withContext(Dispatchers.IO) {
         try {

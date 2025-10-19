@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/admin_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarAdmin"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:title="Admin Dashboard"
+        android:titleTextColor="@android:color/white"
+        app:menu="@menu/menu_admin"
+        tools:ignore="HardcodedText" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Greeting -->
+            <TextView
+                android:id="@+id/tvGreeting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Chào, Admin 👋"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:paddingBottom="12dp"
+                tools:ignore="HardcodedText" />
+
+            <!-- Quick stats -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginBottom="16dp">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="120dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <TextView
+                            android:id="@+id/tvTotalProductsLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tổng sản phẩm"
+                            android:textSize="14sp"
+                            tools:ignore="HardcodedText" />
+
+                        <TextView
+                            android:id="@+id/tvTotalProducts"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="—"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="8dp"
+                            tools:ignore="HardcodedText" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="120dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <TextView
+                            android:id="@+id/tvTotalOrdersLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tổng đơn"
+                            android:textSize="14sp"
+                            tools:ignore="HardcodedText" />
+
+                        <TextView
+                            android:id="@+id/tvTotalOrders"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="—"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="8dp"
+                            tools:ignore="HardcodedText" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- Action cards -->
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:rowCount="2"
+                android:alignmentMode="alignMargins"
+                android:columnOrderPreserved="false"
+                android:useDefaultMargins="true">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardProducts"
+                    android:layout_width="0dp"
+                    android:layout_height="140dp"
+                    android:layout_columnWeight="1"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="6dp"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    tools:ignore="KeyboardInaccessibleWidget">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:tint="@color/black"
+                            android:src="@drawable/ic_products"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Quản lý sản phẩm"
+                            android:textStyle="bold"
+                            android:textSize="16sp"
+                            android:layout_marginTop="12dp"
+                            tools:ignore="HardcodedText" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Thêm / Sửa / Xóa sản phẩm"
+                            android:textSize="12sp"
+                            android:layout_marginTop="6dp"
+                            tools:ignore="HardcodedText" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardCategories"
+                    android:layout_width="0dp"
+                    android:layout_height="140dp"
+                    android:layout_columnWeight="1"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="6dp"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    tools:ignore="KeyboardInaccessibleWidget">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:tint="@color/black"
+                            android:src="@drawable/ic_category"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Quản lý danh mục"
+                            android:textStyle="bold"
+                            android:textSize="16sp"
+                            android:layout_marginTop="12dp"
+                            tools:ignore="HardcodedText" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Thêm / Sửa / Xóa danh mục"
+                            android:textSize="12sp"
+                            android:layout_marginTop="6dp"
+                            tools:ignore="HardcodedText" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardRevenue"
+                    android:layout_width="0dp"
+                    android:layout_height="140dp"
+                    android:layout_columnWeight="1"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="6dp"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    tools:ignore="KeyboardInaccessibleWidget">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:tint="@color/black"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_revenue" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Thống kê doanh thu"
+                            android:textStyle="bold"
+                            android:textSize="16sp"
+                            android:layout_marginTop="12dp"
+                            tools:ignore="HardcodedText" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/xem_bi_u_export_csv"
+                            android:textSize="12sp"
+                            android:layout_marginTop="6dp"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardUsers"
+                    android:layout_width="0dp"
+                    android:layout_height="140dp"
+                    android:layout_columnWeight="1"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="6dp"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    tools:ignore="KeyboardInaccessibleWidget">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:tint="@color/black"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_user" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Quản lý người dùng"
+                            android:textStyle="bold"
+                            android:textSize="16sp"
+                            android:layout_marginTop="12dp"
+                            tools:ignore="HardcodedText" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Xem, thay đổi quyền"
+                            android:textSize="12sp"
+                            android:layout_marginTop="6dp"
+                            tools:ignore="HardcodedText" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+            </GridLayout>
+
+            <!-- Footer spacing -->
+            <Space android:layout_width="match_parent" android:layout_height="24dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

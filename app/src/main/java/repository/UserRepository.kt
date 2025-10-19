@@ -44,9 +44,13 @@ class UserRepository {
             .get()
             .await()
 
-        return snapshot.documents.firstOrNull()?.toObject(User::class.java)?.copy(
-            id = snapshot.documents.firstOrNull()?.id
-        )
+        return snapshot.documents.firstOrNull()?.let { doc ->
+            val user = doc.toObject(User::class.java)
+            user?.copy(
+                id = doc.id,
+                role = doc.getLong("role")?.toInt() ?: 0
+            )
+        }
     }
 
     // 🟢 Lấy user theo thuộc tính bất kỳ

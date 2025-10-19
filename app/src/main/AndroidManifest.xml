@@ -26,20 +26,20 @@
         <activity
             android:name="ui.auth.LoginActivity"
             android:exported="true">
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.MAIN" />-->
-            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-            <!--            </intent-filter>-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <!-- RegisterActivity -->
         <activity
             android:name="ui.auth.RegisterActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
 
         <!-- HomeActivity (nếu có) -->
@@ -58,9 +58,16 @@
 
         <!-- ProductDetailActivity-->
         <activity android:name="ui.product.ProductDetailActivity" />
-
+        <activity android:name="ui.admin.AdminActivity"
+            tools:ignore="MissingClass" />
         <activity
             android:name="ui.home.CartActivity"
+            android:exported="true" />
+        <activity
+            android:name="ui.admin.category.AdminCategoryActivity"
+            android:exported="true" />
+        <activity
+            android:name="ui.admin.category.CategoryFormActivity"
             android:exported="true" />
     </application>
 

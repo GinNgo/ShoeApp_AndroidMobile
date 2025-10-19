@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context="ui.admin.category.CategoryFormActivity">
+
+    <!-- 🔹 Toolbar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarCategoryForm"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorSurface"
+        app:title="Thêm danh mục"
+        app:titleCentered="true"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:navigationIconTint="@color/black"/>
+
+    <!-- 🔹 Nội dung chính -->
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/toolbarCategoryForm"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutCategoryName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tên danh mục">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtCategoryName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutCategoryDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Mô tả">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtCategoryDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="end"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnBackToList"
+                    android:text="Quay lại"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnDeleteCategory"
+                    android:text="Xóa"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSaveCategory"
+                    android:text="Lưu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
