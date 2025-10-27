@@ -32,4 +32,7 @@
     <string name="color">Color</string>
     <string name="minus">-</string>
     <string name="xem_bi_u_export_csv"><![CDATA[Xem biểu đồ & export CSV]]></string>
+    <string name="save">Save</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
 </resources>

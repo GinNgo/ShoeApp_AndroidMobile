@@ -21,6 +21,7 @@ import ui.auth.ProfileActivity
 import ui.product.ProductDetailActivity
 import android.util.Log
 import android.widget.TextView
+import utils.SessionManager
 
 class HomeActivity : BaseActivity() {
 
@@ -28,15 +29,17 @@ class HomeActivity : BaseActivity() {
     private lateinit var productAdapter: ProductAdapter
     private var productList = ArrayList<Product>() // ✅ init luôn
     private val productService = ProductService()
+    private lateinit var sessionManager: SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_home)
 
+        sessionManager = SessionManager(this)
+        val email = sessionManager.getUserSession()?.first
         val tvName = findViewById<TextView>(R.id.tvName)
-        val name = intent.getStringExtra("email") ?: "No name"
-        tvName.text = name
+        tvName.text = email
 
         // Padding cho status bar/navigation bar
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->

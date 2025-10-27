@@ -42,7 +42,7 @@
         android:layout_marginTop="30dp"
         android:contentDescription="@string/avatar"
         android:scaleType="centerCrop"
-        android:src="@drawable/logo"
+        android:src="@drawable/avatar"
         android:background="@drawable/circle_frame"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,11 +60,11 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <EditText
-            android:id="@+id/full_name"
+            android:id="@+id/first_name"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="30dp"
-            android:hint="@string/full_name"
+            android:hint="@string/first_name"
             android:importantForAutofill="no"
             android:inputType="text"
             android:background="@drawable/edittext_gray"
@@ -72,37 +72,37 @@
             tools:layout_editor_absoluteY="125dp" />
 
         <EditText
-            android:id="@+id/nick_name"
+            android:id="@+id/last_name"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="30dp"
-            android:hint="@string/nickname"
+            android:hint="@string/last_name"
             android:importantForAutofill="no"
             android:inputType="text"
             android:background="@drawable/edittext_gray"
             tools:layout_editor_absoluteX="18dp"
             tools:layout_editor_absoluteY="125dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="30dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/nick_name">
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:layout_marginBottom="30dp"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/last_name">-->
 
-            <EditText
-                android:id="@+id/date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/dateBirth"
-                android:importantForAutofill="no"
-                android:inputType="date"
-                android:padding="12dp"
-                android:background="@drawable/edittext_gray"
-                tools:layout_editor_absoluteX="18dp"
-                tools:layout_editor_absoluteY="125dp" />
-        </LinearLayout>
+<!--            <EditText-->
+<!--                android:id="@+id/date"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:hint="@string/dateBirth"-->
+<!--                android:importantForAutofill="no"-->
+<!--                android:inputType="date"-->
+<!--                android:padding="12dp"-->
+<!--                android:background="@drawable/edittext_gray"-->
+<!--                tools:layout_editor_absoluteX="18dp"-->
+<!--                tools:layout_editor_absoluteY="125dp" />-->
+<!--        </LinearLayout>-->
 
         <EditText
             android:id="@+id/mail"
@@ -113,6 +113,7 @@
             android:importantForAutofill="no"
             android:inputType="text"
             android:background="@drawable/edittext_gray"
+            android:enabled="false"
             tools:layout_editor_absoluteX="18dp"
             tools:layout_editor_absoluteY="125dp" />
 
@@ -140,7 +141,7 @@
         android:id="@+id/submit_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/Continue"
+        android:text="@string/save"
         android:layout_margin="30dp"
         android:backgroundTint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
