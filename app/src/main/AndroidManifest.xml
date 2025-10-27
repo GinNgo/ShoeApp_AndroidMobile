@@ -69,6 +69,12 @@
         <activity
             android:name="ui.admin.category.CategoryFormActivity"
             android:exported="true" />
+        <activity
+            android:name="ui.admin.product.AdminProductActivity"
+            android:exported="true" />
+        <activity
+            android:name="ui.admin.product.ProductFormActivity"
+            android:exported="true" />
     </application>
 
 </manifest>

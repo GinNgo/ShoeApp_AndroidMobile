@@ -9,4 +9,8 @@ data class Category(
     val name: String = "",
     val createdAt:  Date? = null,
     val description: String? = null
-) : Serializable
+) : Serializable{
+    override fun toString(): String {
+        return name // 👈 để Spinner hiển thị tên danh mục
+    }
+}

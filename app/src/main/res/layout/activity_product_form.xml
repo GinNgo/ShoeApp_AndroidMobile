@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbarProductForm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:title="Thêm sản phẩm" />
+
+        <EditText android:id="@+id/edtName" android:hint="Tên sản phẩm"
+            android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+        <EditText android:id="@+id/edtDescription" android:hint="Mô tả"
+            android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+        <EditText android:id="@+id/edtPrice" android:hint="Giá"
+            android:inputType="numberDecimal"
+            android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+        <EditText android:id="@+id/edtQuantity" android:hint="Số lượng tồn"
+            android:inputType="number"
+            android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+        <EditText android:id="@+id/edtMaterial" android:hint="Chất liệu"
+            android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+        <EditText android:id="@+id/edtBrand" android:hint="Thương hiệu"
+            android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+        <EditText android:id="@+id/edtSizeChart" android:hint="Bảng size (URL)"
+            android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+        <Spinner
+            android:id="@+id/spinnerCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"/>
+
+        <Button
+            android:id="@+id/btnPickColors"
+            android:text="🎨 Chọn màu sắc"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_marginTop="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:id="@+id/layoutSelectedColors"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@android:color/transparent" />
+
+        <Button
+            android:id="@+id/btnAddImage"
+            android:text="🖼️ Thêm hình ảnh"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_marginTop="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:id="@+id/layoutImages"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSave"
+            android:text="💾 Lưu sản phẩm"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</ScrollView>

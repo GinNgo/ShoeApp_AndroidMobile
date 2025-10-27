@@ -37,7 +37,15 @@ class ProductService(
             false
         }
     }
-
+    suspend fun updateProduct(product: Product): Boolean = withContext(Dispatchers.IO) {
+        try {
+            repository.updateProduct(product)
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
     // 🟢 Lấy sản phẩm theo ID
     suspend fun getProductById(id: String): Product? = withContext(Dispatchers.IO) {
         try {
@@ -72,5 +80,13 @@ class ProductService(
     // 🟡 Lấy ảnh chính (primary image)
     fun getPrimaryImageUrl(product: Product): String? {
         return product.images.firstOrNull { it.isPrimary }?.imageUrl
+    }
+    suspend fun getProductsByCategory(categoryId: String): List<Product> = withContext(Dispatchers.IO) {
+        try {
+            repository.getProductsByCategory(categoryId)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
+        }
     }
 }

@@ -30,7 +30,7 @@ class ProductRepository(
             "categoryId" to product.categoryId,
             "brand" to product.brand,
             "material" to product.material,
-            "color" to product.color,
+            "color" to product.colors,
             "sizeChartUrl" to product.sizeChartUrl,
             "images" to product.images.map {
                 mapOf(
@@ -46,8 +46,39 @@ class ProductRepository(
         val doc = firestore.getById(collectionName, id)
         return doc?.toObject(Product::class.java)?.copy(id = doc.id)
     }
-
+    // 🟢 Cập nhật sản phẩm
+    suspend fun updateProduct(product: Product) {
+        val data = hashMapOf(
+            "name" to product.name,
+            "description" to product.description,
+            "price" to product.price,
+            "stockQuantity" to product.stockQuantity,
+            "categoryId" to product.categoryId,
+            "brand" to product.brand,
+            "material" to product.material,
+            "colors" to product.colors,
+            "sizeChartUrl" to product.sizeChartUrl,
+            "primaryImageUrl" to product.primaryImageUrl,
+            "images" to product.images.map { img ->
+                hashMapOf(
+                    "imageUrl" to img.imageUrl,
+                    "isPrimary" to img.isPrimary
+                )
+            }
+        )
+        firestore.updateData(collectionName, product.id, data)
+    }
     suspend fun deleteProduct(id: String) {
         firestore.deleteData(collectionName, id)
+    }
+    // 🔍 Lấy theo danh mục
+    suspend fun getProductsByCategory(categoryId: String): List<Product> {
+        val docs = firestore.getListBy(collectionName,"categoryId", categoryId)
+
+
+        return docs.mapNotNull { doc ->
+            val product = doc.toObject(Product::class.java)
+            product?.copy(id = doc.id)
+        }
     }
 }

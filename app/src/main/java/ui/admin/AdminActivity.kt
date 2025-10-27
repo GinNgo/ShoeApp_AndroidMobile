@@ -15,6 +15,7 @@ import model.Category
 import model.Product
 import service.ProductService
 import ui.admin.category.AdminCategoryActivity
+import ui.admin.product.AdminProductActivity
 import ui.auth.LoginActivity
 import utils.SessionManager
 
@@ -43,10 +44,10 @@ class AdminActivity : AppCompatActivity() {
 
 
         // Click listeners
-//        cardProducts.setOnClickListener {
-//            startActivity(Intent(this, ProductsActivity::class.java))
-//        }
-//
+        cardProducts.setOnClickListener {
+            startActivity(Intent(this, AdminProductActivity::class.java))
+        }
+
         cardCategories.setOnClickListener {
             startActivity(Intent(this, AdminCategoryActivity::class.java))
         }
