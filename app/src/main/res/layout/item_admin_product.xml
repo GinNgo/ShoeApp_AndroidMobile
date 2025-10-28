@@ -46,7 +46,7 @@
         app:navigationIconTint="@color/black"
         android:padding="4dp"
         android:contentDescription="Sửa"
-        app:tint="@color/black" />
+        app:tint="?attr/colorPrimary" />
 
     <ImageView
         android:id="@+id/btnDeleteProduct"
@@ -54,5 +54,6 @@
         android:layout_height="32dp"
         android:src="@drawable/ic_delete"
         android:padding="4dp"
-        android:contentDescription="Xóa" />
+        android:contentDescription="Xóa"
+        app:tint="?attr/colorError"/>
 </LinearLayout>

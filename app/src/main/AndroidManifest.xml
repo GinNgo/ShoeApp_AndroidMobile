@@ -75,6 +75,18 @@
         <activity
             android:name="ui.admin.product.ProductFormActivity"
             android:exported="true" />
+        <activity
+            android:name="ui.admin.brand.AdminBrandActivity"
+            android:exported="false" />
+        <activity
+            android:name="ui.admin.brand.BrandFormActivity"
+            android:exported="false" />
+        <activity
+            android:name="ui.admin.voucher.AdminVoucherActivity"
+            android:exported="false" />
+        <activity
+            android:name="ui.admin.voucher.VoucherFormActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

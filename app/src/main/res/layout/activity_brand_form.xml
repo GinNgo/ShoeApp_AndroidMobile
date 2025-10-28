@@ -5,12 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ui.admin.category.CategoryFormActivity">
+    tools:context="ui.admin.brand.BrandFormActivity">
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbarCategoryForm"
+        android:id="@+id/toolbarBrandForm"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
-        app:title="Thêm danh mục"
+        app:title="Thêm thương hiệu"
         app:titleCentered="true"
         app:navigationIcon="@drawable/ic_arrow_back"
         app:layout_constraintTop_toTopOf="parent"
@@ -23,7 +23,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fillViewport="true"
-        app:layout_constraintTop_toBottomOf="@id/toolbarCategoryForm"
+        app:layout_constraintTop_toBottomOf="@id/toolbarBrandForm"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -33,25 +33,25 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp"> <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layoutCategoryName"
+            android:id="@+id/layoutBrandName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Tên danh mục">
+            android:hint="Tên thương hiệu">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtCategoryName"
+                android:id="@+id/edtBrandName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutCategoryDescription"
+                android:id="@+id/layoutBrandDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Mô tả">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtCategoryDescription"
+                    android:id="@+id/edtBrandDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -72,7 +72,7 @@
                     android:layout_marginEnd="8dp"/>
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnDeleteCategory"
+                    android:id="@+id/btnDeleteBrand"
                     android:text="Xóa"
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="wrap_content"
@@ -80,13 +80,11 @@
                     android:layout_marginEnd="8dp"/>
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnSaveCategory"
+                    android:id="@+id/btnSaveBrand"
                     android:text="Lưu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
         </LinearLayout>
-
     </ScrollView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

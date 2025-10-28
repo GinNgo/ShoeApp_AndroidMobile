@@ -1,91 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="16dp"
-    android:background="@color/white"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="ui.admin.product.ProductFormActivity">
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarProductForm"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        app:title="Thêm sản phẩm"
+        app:titleCentered="true"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/Widget.MaterialComponents.Toolbar.Primary" />
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbarProductForm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:navigationIcon="@drawable/ic_arrow_back"
-            app:title="Thêm sản phẩm" />
-
-        <EditText android:id="@+id/edtName" android:hint="Tên sản phẩm"
-            android:layout_width="match_parent" android:layout_height="wrap_content"/>
-
-        <EditText android:id="@+id/edtDescription" android:hint="Mô tả"
-            android:layout_width="match_parent" android:layout_height="wrap_content"/>
-
-        <EditText android:id="@+id/edtPrice" android:hint="Giá"
-            android:inputType="numberDecimal"
-            android:layout_width="match_parent" android:layout_height="wrap_content"/>
-
-        <EditText android:id="@+id/edtQuantity" android:hint="Số lượng tồn"
-            android:inputType="number"
-            android:layout_width="match_parent" android:layout_height="wrap_content"/>
-
-        <EditText android:id="@+id/edtMaterial" android:hint="Chất liệu"
-            android:layout_width="match_parent" android:layout_height="wrap_content"/>
-
-        <EditText android:id="@+id/edtBrand" android:hint="Thương hiệu"
-            android:layout_width="match_parent" android:layout_height="wrap_content"/>
-
-        <EditText android:id="@+id/edtSizeChart" android:hint="Bảng size (URL)"
-            android:layout_width="match_parent" android:layout_height="wrap_content"/>
-
-        <Spinner
-            android:id="@+id/spinnerCategory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"/>
-
-        <Button
-            android:id="@+id/btnPickColors"
-            android:text="🎨 Chọn màu sắc"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_marginTop="12dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/toolbarProductForm"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
-            android:id="@+id/layoutSelectedColors"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:padding="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@android:color/transparent" />
+            android:padding="16dp">
 
-        <Button
-            android:id="@+id/btnAddImage"
-            android:text="🖼️ Thêm hình ảnh"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_marginTop="12dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tên sản phẩm"
+                android:layout_marginBottom="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <LinearLayout
-            android:id="@+id/layoutImages"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Mô tả"
+                android:layout_marginBottom="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSave"
-            android:text="💾 Lưu sản phẩm"
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-</ScrollView>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Giá"
+                android:layout_marginBottom="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtPrice"
+                    android:inputType="numberDecimal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutMaterial"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Chất liệu"
+                android:layout_marginBottom="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtMaterial"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutBrand"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Thương hiệu"
+                android:layout_marginBottom="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtBrand"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutSizeChart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Bảng size (URL)"
+                android:layout_marginBottom="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtSizeChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Danh mục"
+                android:textSize="16sp"
+                android:layout_marginTop="8dp"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSelectCategories"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chọn danh mục" />
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupCategories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Màu sắc và Tồn kho"
+                android:textSize="16sp"
+                android:layout_marginTop="16dp"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnPickColors"
+                android:text="🎨 Thêm Màu"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_marginTop="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:id="@+id/layoutSelectedColors"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddImage"
+                android:text="🖼️ Thêm hình ảnh"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_marginTop="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:id="@+id/layoutImages"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </HorizontalScrollView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSave"
+                android:text="💾 Lưu sản phẩm"
+                android:layout_marginTop="24dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardElevation="4dp"
+    app:cardCornerRadius="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <View
+            android:id="@+id/viewStatus"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:background="@drawable/oval_shape_placeholder"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvVoucherCode"
+            app:layout_constraintBottom_toBottomOf="@id/tvVoucherCode"
+            tools:backgroundTint="@android:color/holo_green_dark"/>
+
+        <TextView
+            android:id="@+id/tvVoucherCode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            app:layout_constraintStart_toEndOf="@id/viewStatus"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btnEditVoucher"
+            tools:text="SALE100K" />
+
+        <TextView
+            android:id="@+id/tvDiscountInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/tvVoucherCode"
+            app:layout_constraintTop_toBottomOf="@id/tvVoucherCode"
+            app:layout_constraintEnd_toStartOf="@id/btnEditVoucher"
+            tools:text="Giảm 100,000đ" />
+
+        <TextView
+            android:id="@+id/tvVoucherDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textAppearance="?attr/textAppearanceBody2"
+            app:layout_constraintStart_toStartOf="@id/tvVoucherCode"
+            app:layout_constraintTop_toBottomOf="@id/tvDiscountInfo"
+            app:layout_constraintEnd_toStartOf="@id/btnEditVoucher"
+            tools:text="Cho đơn hàng từ 500,000đ" />
+
+        <TextView
+            android:id="@+id/tvVoucherExpiry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textAppearance="?attr/textAppearanceCaption"
+            app:layout_constraintStart_toStartOf="@id/tvVoucherCode"
+            app:layout_constraintTop_toBottomOf="@id/tvVoucherDescription"
+            tools:text="Hết hạn: 30/12/2025" />
+
+        <TextView
+            android:id="@+id/tvVoucherUsage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textAppearance="?attr/textAppearanceCaption"
+            app:layout_constraintStart_toEndOf="@id/tvVoucherExpiry"
+            app:layout_constraintTop_toTopOf="@id/tvVoucherExpiry"
+            tools:text="Đã dùng: 50 / 100" />
+
+        <ImageButton
+            android:id="@+id/btnEditVoucher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_edit"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toStartOf="@id/btnDeleteVoucher"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:tint="?attr/colorPrimary"/>
+
+        <ImageButton
+            android:id="@+id/btnDeleteVoucher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_delete"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:tint="?attr/colorError"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
