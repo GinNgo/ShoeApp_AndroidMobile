@@ -3,19 +3,25 @@ package ui.product
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.shoesapp.R
+import kotlinx.coroutines.launch
 import model.Product
+import service.CartServiceImpl
+import ui.BaseActivity
 import ui.home.HomeActivity
 
 @Suppress("DEPRECATION")
-class ProductDetailActivity : AppCompatActivity() {
+class ProductDetailActivity : BaseActivity() {
 
     private lateinit var imgProduct: ImageView
     private lateinit var txtQuantity: TextView
@@ -24,6 +30,8 @@ class ProductDetailActivity : AppCompatActivity() {
     private lateinit var btnMinus: ImageButton
     private lateinit var btnPlus: ImageButton
     private lateinit var btnAddToCart: Button
+    private lateinit var cartService: CartServiceImpl
+
 
     private var quantity = 1
     private var unitPrice = 0.0
@@ -42,6 +50,8 @@ class ProductDetailActivity : AppCompatActivity() {
         btnMinus = findViewById(R.id.btnMinus)
         btnPlus = findViewById(R.id.btnPlus)
         btnAddToCart = findViewById(R.id.btnAddToCart)
+
+        cartService = CartServiceImpl()
 
         // Nhận product từ Intent
         val product = intent.getSerializableExtra("product") as? Product
@@ -92,7 +102,28 @@ class ProductDetailActivity : AppCompatActivity() {
 
         // Thêm vào giỏ hàng
         btnAddToCart.setOnClickListener {
-            // TODO: Thêm logic lưu giỏ hàng
+            lifecycleScope.launch {
+                val userId = getUserIdFromSession()
+
+                if (userId == null) {
+                    Toast.makeText(this@ProductDetailActivity, "Bạn chưa đăng nhập", Toast.LENGTH_SHORT).show()
+                    return@launch
+                }
+
+                val productId = product?.id;
+                if (productId == null) {
+                    Toast.makeText(this@ProductDetailActivity, "Sản phẩm không tồn tại", Toast.LENGTH_SHORT).show()
+                    return@launch
+                }
+
+                Log.i("CartActivity", "Product: $product")
+
+                // 3️⃣ Thêm sản phẩm vào giỏ hàng
+                cartService.addProductToCart(userId, productId)
+
+                // 4️⃣ Thông báo cho người dùng
+                Toast.makeText(this@ProductDetailActivity, "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show()
+            }
         }
 
         // Nút quay lại Home

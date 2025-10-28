@@ -65,6 +65,7 @@ class HomeActivity : BaseActivity() {
             try {
                 val products = productService.getAllProducts().map { p ->
                     Product(
+                        id = p.id,
                         name = p.name,
                         description = p.description,
                         price = p.price,
