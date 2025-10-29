@@ -72,6 +72,11 @@ class ProductService(
         return products.filter { it.brand?.equals(brand, ignoreCase = true) == true }
     }
 
+    fun filterByName(products: List<Product>, query: String): List<Product> {
+        val normalizedQuery = query.trim().lowercase()
+        return products.filter { it.name.lowercase().contains(normalizedQuery) == true }
+    }
+
     // 🟡 Tính tổng giá
     fun calculateTotalPrice(product: Product, quantity: Int): Double {
         return product.price * quantity

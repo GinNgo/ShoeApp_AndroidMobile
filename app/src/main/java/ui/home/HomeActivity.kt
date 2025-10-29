@@ -1,30 +1,30 @@
 package ui.home
 
+import adapter.ProductAdapter
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoesapp.R
-import adapter.ProductAdapter
-import model.Product
-import model.ProductImage
-import service.ProductService
-import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import model.CustomBottomSheetDialog
+import model.Product
+import service.ProductService
 import ui.BaseActivity
+import ui.auth.LoginActivity
 import ui.auth.ProfileActivity
 import ui.product.ProductDetailActivity
-import android.util.Log
-import android.widget.Button
-import android.widget.TextView
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import model.CustomBottomSheetDialog
-import ui.auth.LoginActivity
 import utils.SessionManager
 
 class HomeActivity : BaseActivity() {
@@ -102,6 +102,32 @@ class HomeActivity : BaseActivity() {
                     onLogout()
                 }
             )
+        }
+
+        // realtime filtering
+        val searchName = findViewById<EditText>(R.id.etSearch)
+        searchName.addTextChangedListener { text ->
+            lifecycleScope.launch {
+                delay(300) // đợi 300ms sau khi ngừng gõ
+                val products = productService.getAllProducts().map { p ->
+                    Product(
+                        id = p.id,
+                        name = p.name,
+                        description = p.description,
+                        price = p.price,
+                        brand = p.brand,
+                        images = p.images // danh sách ảnh của fen
+                    )
+                }
+
+                val query = text.toString().trim()
+                val results = if (query.isEmpty()) products
+                else productService.filterByName(products, query)
+
+                productList.clear()
+                productList.addAll(results)
+                productAdapter.notifyDataSetChanged()
+            }
         }
         handleNavigation(R.id.nav_home)
     }
