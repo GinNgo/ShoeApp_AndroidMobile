@@ -47,13 +47,8 @@ class CartRepositoryImpl(
             val updatedProducts = cart?.products?.toMutableMap() ?: mutableMapOf()
 
             updatedProducts[productId]?.let { quantity ->
-                if (quantity > 1) {
-                    // giảm số lượng
-                    updatedProducts[productId] = quantity - 1
-                } else {
-                    // xóa hoàn toàn sản phẩm
-                    updatedProducts.remove(productId)
-                }
+                // xóa hoàn toàn sản phẩm
+                updatedProducts.remove(productId)
             }
 
             firestore.updateData(collectionName, cartId, mapOf("products" to updatedProducts))

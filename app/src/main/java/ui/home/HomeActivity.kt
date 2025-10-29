@@ -20,7 +20,11 @@ import ui.BaseActivity
 import ui.auth.ProfileActivity
 import ui.product.ProductDetailActivity
 import android.util.Log
+import android.widget.Button
 import android.widget.TextView
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import model.CustomBottomSheetDialog
+import ui.auth.LoginActivity
 import utils.SessionManager
 
 class HomeActivity : BaseActivity() {
@@ -85,6 +89,20 @@ class HomeActivity : BaseActivity() {
         }
 
         onProfile()
+
+        val logout = findViewById<ImageView>(R.id.ic_logout)
+        logout.setOnClickListener {
+            CustomBottomSheetDialog.show(
+                context = this,
+                title="Logout",
+                message = "Are you sure you want to log out?",
+                positiveText = "Yes, Logout",
+                negativeText = "Cancel",
+                onConfirm = {
+                    onLogout()
+                }
+            )
+        }
         handleNavigation(R.id.nav_home)
     }
 
@@ -94,5 +112,11 @@ class HomeActivity : BaseActivity() {
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun onLogout(){
+        sessionManager.clearSession()
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
     }
 }

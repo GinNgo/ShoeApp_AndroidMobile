@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.shoesapp.R
 import kotlinx.coroutines.launch
 import model.CartItem
+import model.CustomBottomSheetDialog
 import service.CartServiceImpl
 import service.ProductService
 import ui.BaseActivity
@@ -59,12 +60,21 @@ class CartActivity : BaseActivity() {
                 }
             },
             onDeleteItem = { cartItem ->
-                lifecycleScope.launch {
-                    cartService.removeProductFromCart(userId!!, cartItem.product.id)
-                    cartItems.remove(cartItem)
-                    gridAdapter.notifyDataSetChanged()
-                    updateTotalPrice()
-                }
+                CustomBottomSheetDialog.show(
+                    context = this,
+                    title="Remove From Cart :${cartItem.product.name}?",
+                    message = "Are you sure you want to remove item?",
+                    positiveText = "Yes, Remove",
+                    negativeText = "Cancel",
+                    onConfirm = {
+                        lifecycleScope.launch {
+                            cartService.removeProductFromCart(userId!!, cartItem.product.id)
+                            cartItems.remove(cartItem)
+                            gridAdapter.notifyDataSetChanged()
+                            updateTotalPrice()
+                        }
+                    }
+                )
             }
         )
 
