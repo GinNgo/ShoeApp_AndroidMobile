@@ -64,6 +64,9 @@
             android:name="ui.home.CartActivity"
             android:exported="true" />
         <activity
+            android:name="ui.home.OrderActivity"
+            android:exported="true" />
+        <activity
             android:name="ui.admin.category.AdminCategoryActivity"
             android:exported="true" />
         <activity

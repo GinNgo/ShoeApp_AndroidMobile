@@ -119,7 +119,7 @@ class ProductDetailActivity : BaseActivity() {
                 Log.i("CartActivity", "Product: $product")
 
                 // 3️⃣ Thêm sản phẩm vào giỏ hàng
-                cartService.addProductToCart(userId, productId)
+                cartService.addProductToCart(userId, productId, quantity)
 
                 // 4️⃣ Thông báo cho người dùng
                 Toast.makeText(this@ProductDetailActivity, "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show()

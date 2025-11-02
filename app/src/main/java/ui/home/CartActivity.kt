@@ -2,7 +2,9 @@ package ui.home
 
 import adapter.GridCartAdapter
 import android.os.Bundle
+import android.view.View
 import android.widget.GridView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -22,6 +24,7 @@ class CartActivity : BaseActivity() {
     private lateinit var productService: ProductService
     private lateinit var cartService: CartServiceImpl
     private var userId: String? = null
+    private lateinit var emptyStateLayout: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +37,7 @@ class CartActivity : BaseActivity() {
         cartService = CartServiceImpl()
 
         val gridView = findViewById<GridView>(R.id.grid_view)
+        emptyStateLayout = findViewById(R.id.empty_state_layout)
 
         // ⚡ Adapter với callback tăng/giảm quantity
         gridAdapter = GridCartAdapter(
@@ -72,6 +76,15 @@ class CartActivity : BaseActivity() {
                             cartItems.remove(cartItem)
                             gridAdapter.notifyDataSetChanged()
                             updateTotalPrice()
+
+                            // Toggle GridView / EmptyState
+                            if (cartItems.isEmpty()) {
+                                gridView.visibility = View.GONE
+                                emptyStateLayout.visibility = View.VISIBLE
+                            } else {
+                                gridView.visibility = View.VISIBLE
+                                emptyStateLayout.visibility = View.GONE
+                            }
                         }
                     }
                 )
@@ -109,6 +122,15 @@ class CartActivity : BaseActivity() {
             cartItems.addAll(items)
             gridAdapter.notifyDataSetChanged()
             updateTotalPrice()
+
+            // Toggle GridView / EmptyState
+            if (cartItems.isEmpty()) {
+                gridView.visibility = View.GONE
+                emptyStateLayout.visibility = View.VISIBLE
+            } else {
+                gridView.visibility = View.VISIBLE
+                emptyStateLayout.visibility = View.GONE
+            }
         }
 
         handleNavigation(R.id.nav_cart)

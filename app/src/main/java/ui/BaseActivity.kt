@@ -7,6 +7,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import service.UserService
 import ui.home.CartActivity
 import ui.home.HomeActivity
+import ui.home.OrderActivity
 import utils.SessionManager
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -27,6 +28,12 @@ abstract class BaseActivity : AppCompatActivity() {
 
                 R.id.nav_cart -> {
                     val intent = Intent(this, CartActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+
+                R.id.nav_order -> {
+                    val intent = Intent(this, OrderActivity::class.java)
                     startActivity(intent)
                     true
                 }
