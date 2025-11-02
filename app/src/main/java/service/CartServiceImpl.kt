@@ -33,6 +33,21 @@ class CartServiceImpl(
         }
     }
 
+    override suspend fun addProductToCart(
+        userId: String,
+        productId: String,
+        quantity: Int
+    ) {
+        var cart = cartRepository.getCartByUserId(userId)
+        if (cart == null) {
+            cartRepository.createCartForUser(userId)
+            cart = cartRepository.getCartByUserId(userId)
+        }
+        cart?.let {
+            cartRepository.addProductInCart(it.id, productId, quantity)
+        }
+    }
+
     // 🟢 Xóa sản phẩm khỏi giỏ hàng của user
     override suspend fun removeProductFromCart(userId: String, productId: String) {
         val cart = cartRepository.getCartByUserId(userId)

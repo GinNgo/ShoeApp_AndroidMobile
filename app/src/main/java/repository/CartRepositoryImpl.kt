@@ -39,6 +39,21 @@ class CartRepositoryImpl(
         }
     }
 
+    override suspend fun addProductInCart(
+        cartId: String,
+        productId: String,
+        quantity: Int
+    ) {
+        val doc = firestore.getById(collectionName, cartId)
+        if (doc != null && doc.exists()) {
+            val cart = doc.toObject(Cart::class.java)
+            val updatedProducts = cart?.products?.toMutableMap() ?: mutableMapOf()
+            updatedProducts[productId] = quantity
+
+            firestore.updateData(collectionName, cartId, mapOf("products" to updatedProducts))
+        }
+    }
+
 
     override suspend fun deleteProductOutOfCart(cartId: String, productId: String) {
         val doc = firestore.getById(collectionName, cartId)

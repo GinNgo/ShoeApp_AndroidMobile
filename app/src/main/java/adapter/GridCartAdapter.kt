@@ -41,7 +41,9 @@ class GridCartAdapter(
 
             // 🔹 Callback với cartItem riêng, không dùng `it` của lambda
             btnIncrease.setOnClickListener { onQuantityChanged(item, +1) }
-            btnDecrease.setOnClickListener { onQuantityChanged(item, -1) }
+            if(item.quantity > 1){
+                btnDecrease.setOnClickListener { onQuantityChanged(item, -1) }
+            }
 
             btnDelete.setOnClickListener { onDeleteItem(item) }
         }

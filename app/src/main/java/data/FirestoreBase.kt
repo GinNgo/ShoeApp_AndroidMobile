@@ -3,8 +3,11 @@ package data
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.tasks.await
+import kotlin.coroutines.resumeWithException
 
 class FirestoreBase(private val db: FirebaseFirestore = FirebaseFirestore.getInstance()) {
 
@@ -71,5 +74,32 @@ class FirestoreBase(private val db: FirebaseFirestore = FirebaseFirestore.getIns
             .get()
             .await()
         return result.documents
+    }
+
+    /**
+     * Lấy dữ liệu từ Firestore theo nhiều điều kiện key -> value
+     * @param collectionName Tên collection
+     * @param conditions Map các điều kiện field -> value
+     * @return List<DocumentSnapshot>
+     */
+    suspend fun getDataWhere(
+        collectionName: String,
+        conditions: Map<String, Any>
+    ): List<DocumentSnapshot> = suspendCancellableCoroutine { cont ->
+
+        var query: Query = db.collection(collectionName)
+
+        // Thêm các điều kiện whereEqualTo
+        for ((field, value) in conditions) {
+            query = query.whereEqualTo(field, value)
+        }
+
+        query.get()
+            .addOnSuccessListener { snapshot ->
+                cont.resume(snapshot.documents) {}
+            }
+            .addOnFailureListener { e ->
+                cont.resumeWithException(e)
+            }
     }
 }
