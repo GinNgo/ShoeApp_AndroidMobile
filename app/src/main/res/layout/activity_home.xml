@@ -72,10 +72,11 @@
                 tools:ignore="ContentDescription" />
 
             <ImageView
+                android:id="@+id/ic_logout"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:padding="4dp"
-                android:src="@drawable/ic_notification"
+                android:src="@drawable/logout"
                 app:tint="@color/black"
                 tools:ignore="ContentDescription" />
         </LinearLayout>

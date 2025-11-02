@@ -13,7 +13,6 @@ class UserRepository {
     // 🟢 Thêm user mới
     suspend fun addUser(user: User): String {
         val data = mapOf(
-            "username" to user.username,
             "email" to user.email,
             "passwordHash" to user.passwordHash,
             "createdAt" to (user.createdAt ?: Timestamp.now()),

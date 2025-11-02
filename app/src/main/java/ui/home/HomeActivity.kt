@@ -1,26 +1,31 @@
 package ui.home
 
+import adapter.ProductAdapter
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoesapp.R
-import adapter.ProductAdapter
-import model.Product
-import model.ProductImage
-import service.ProductService
-import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import model.CustomBottomSheetDialog
+import model.Product
+import service.ProductService
 import ui.BaseActivity
+import ui.auth.LoginActivity
 import ui.auth.ProfileActivity
 import ui.product.ProductDetailActivity
-import android.util.Log
-import android.widget.TextView
+import utils.SessionManager
 
 class HomeActivity : BaseActivity() {
 
@@ -28,15 +33,17 @@ class HomeActivity : BaseActivity() {
     private lateinit var productAdapter: ProductAdapter
     private var productList = ArrayList<Product>() // ✅ init luôn
     private val productService = ProductService()
+    private lateinit var sessionManager: SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_home)
 
+        sessionManager = SessionManager(this)
+        val email = sessionManager.getUserSession()?.first
         val tvName = findViewById<TextView>(R.id.tvName)
-        val name = intent.getStringExtra("email") ?: "No name"
-        tvName.text = name
+        tvName.text = email
 
         // Padding cho status bar/navigation bar
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -62,6 +69,7 @@ class HomeActivity : BaseActivity() {
             try {
                 val products = productService.getAllProducts().map { p ->
                     Product(
+                        id = p.id,
                         name = p.name,
                         description = p.description,
                         price = p.price,
@@ -81,6 +89,46 @@ class HomeActivity : BaseActivity() {
         }
 
         onProfile()
+
+        val logout = findViewById<ImageView>(R.id.ic_logout)
+        logout.setOnClickListener {
+            CustomBottomSheetDialog.show(
+                context = this,
+                title="Logout",
+                message = "Are you sure you want to log out?",
+                positiveText = "Yes, Logout",
+                negativeText = "Cancel",
+                onConfirm = {
+                    onLogout()
+                }
+            )
+        }
+
+        // realtime filtering
+        val searchName = findViewById<EditText>(R.id.etSearch)
+        searchName.addTextChangedListener { text ->
+            lifecycleScope.launch {
+                delay(300) // đợi 300ms sau khi ngừng gõ
+                val products = productService.getAllProducts().map { p ->
+                    Product(
+                        id = p.id,
+                        name = p.name,
+                        description = p.description,
+                        price = p.price,
+                        brand = p.brand,
+                        images = p.images // danh sách ảnh của fen
+                    )
+                }
+
+                val query = text.toString().trim()
+                val results = if (query.isEmpty()) products
+                else productService.filterByName(products, query)
+
+                productList.clear()
+                productList.addAll(results)
+                productAdapter.notifyDataSetChanged()
+            }
+        }
         handleNavigation(R.id.nav_home)
     }
 
@@ -90,5 +138,11 @@ class HomeActivity : BaseActivity() {
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun onLogout(){
+        sessionManager.clearSession()
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
     }
 }
