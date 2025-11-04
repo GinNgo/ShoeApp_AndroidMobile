@@ -61,7 +61,7 @@
         <activity android:name="ui.admin.AdminActivity"
             tools:ignore="MissingClass" />
         <activity
-            android:name="ui.home.CartActivity"
+            android:name="ui.cart.CartActivity"
             android:exported="true" />
         <activity
             android:name="ui.home.OrderActivity"
@@ -90,6 +90,16 @@
         <activity
             android:name="ui.admin.voucher.VoucherFormActivity"
             android:exported="false" />
+        <activity
+            android:name="ui.address.AddressListActivity"
+            android:exported="false" />
+        <activity
+            android:name="ui.address.AddressFormActivity"
+            android:exported="false" />
+        <activity
+            android:name="ui.checkout.CheckoutActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

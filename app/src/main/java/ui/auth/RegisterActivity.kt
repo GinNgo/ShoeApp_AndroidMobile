@@ -13,8 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.shoesapp.R
 import kotlinx.coroutines.launch
 import model.User
-import service.UserService
-import ui.home.HomeActivity
+import service.serviceImplement.UserService
 import kotlin.jvm.java
 
 class RegisterActivity : AppCompatActivity() {

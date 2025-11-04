@@ -1,204 +1,190 @@
-package ui.home
+package ui.cart
 
-import adapter.GridCartAdapter
+import adapter.CartAdapter
+import android.content.Intent // ⭐️ (THÊM)
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
-import android.widget.GridView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import com.example.shoesapp.R
+import com.google.firebase.Timestamp // ⭐️ (THÊM)
 import kotlinx.coroutines.launch
 import model.CartItem
 import model.CustomBottomSheetDialog
-import model.Order.Order
-import model.Order.OrderStatus
-import service.CartServiceImpl
+import model.Order
+import model.OrderItem
+import model.OrderStatus
 import service.IOrderService
-import service.OrderServiceImpl
-import service.ProductService
+import service.serviceImplement.CartService
+import service.serviceImplement.OrderService
+import service.serviceImplement.UserService
 import ui.BaseActivity
+import ui.checkout.CheckoutActivity // ⭐️ (THÊM)
+import ui.home.HomeActivity // ⭐️ (THÊM)
+import ui.home.OrderActivity // ⭐️ (THÊM)
+import java.text.NumberFormat
+import java.util.Locale
 
 class CartActivity : BaseActivity() {
 
-    private lateinit var cartItems: MutableList<CartItem>
-    private lateinit var gridAdapter: GridCartAdapter
-    private lateinit var productService: ProductService
-    private lateinit var cartService: CartServiceImpl
-    private var userId: String? = null
-    private lateinit var emptyStateLayout: LinearLayout
-
+    // --- Views ---
+    private lateinit var recyclerCart: RecyclerView
+    private lateinit var tvTotalPrice: TextView
     private lateinit var btnCheckout: Button
+    private lateinit var emptyStateLayout: LinearLayout
+    private lateinit var checkoutContainer: LinearLayout
 
-    private lateinit var orderServiceImpl: IOrderService
+    // --- Services ---
+    private val cartService = CartService()
+    private val orderServiceImpl: IOrderService = OrderService()
+    private val formatter = NumberFormat.getCurrencyInstance(Locale("vi", "VN"))
+
+    // --- Adapter & Data ---
+    private lateinit var cartAdapter: CartAdapter
+    private var cartItems = mutableListOf<CartItem>()
+    private var currentUserId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.cart)
+        setContentView(R.layout.activity_cart)
 
-        // ✅ Khởi tạo
-        cartItems = mutableListOf()
-        productService = ProductService()
-        cartService = CartServiceImpl()
-        orderServiceImpl = OrderServiceImpl()
-        btnCheckout = findViewById<Button>(R.id.btnCheckout)
-
-        val gridView = findViewById<GridView>(R.id.grid_view)
-        emptyStateLayout = findViewById(R.id.empty_state_layout)
-
-        // ⚡ Adapter với callback tăng/giảm quantity
-        gridAdapter = GridCartAdapter(
-            this, cartItems,
-            onQuantityChanged = { cartItem, delta ->
-                userId?.let { uid ->
-                    lifecycleScope.launch {
-                        if (delta > 0) {
-                            cartService.addProductToCart(uid, cartItem.product.id)
-                        } else {
-                            cartService.removeProductFromCart(uid, cartItem.product.id)
-                        }
-
-                        // Cập nhật UI
-                        val index = cartItems.indexOf(cartItem)
-                        if (index != -1) {
-                            val newQty = cartItems[index].quantity + delta
-                            if (newQty <= 0) cartItems.removeAt(index)
-                            else cartItems[index] = cartItems[index].copy(quantity = newQty)
-                            gridAdapter.notifyDataSetChanged()
-                            updateTotalPrice()
-                        }
-                    }
-                }
-            },
-            onDeleteItem = { cartItem ->
-                CustomBottomSheetDialog.show(
-                    context = this,
-                    title="Remove From Cart :${cartItem.product.name}?",
-                    message = "Are you sure you want to remove item?",
-                    positiveText = "Yes, Remove",
-                    negativeText = "Cancel",
-                    onConfirm = {
-                        lifecycleScope.launch {
-                            cartService.removeProductFromCart(userId!!, cartItem.product.id)
-                            cartItems.remove(cartItem)
-                            gridAdapter.notifyDataSetChanged()
-                            updateTotalPrice()
-
-                            // Toggle GridView / EmptyState
-                            if (cartItems.isEmpty()) {
-                                gridView.visibility = View.GONE
-                                emptyStateLayout.visibility = View.VISIBLE
-                            } else {
-                                gridView.visibility = View.VISIBLE
-                                emptyStateLayout.visibility = View.GONE
-                            }
-                        }
-                    }
-                )
-            }
-        )
-
-        gridView.adapter = gridAdapter
-
-        // 🔹 Load cart từ Firestore
-        lifecycleScope.launch {
-            userId = getUserIdFromSession()
-            if (userId == null) {
-                Toast.makeText(this@CartActivity, "Chưa đăng nhập", Toast.LENGTH_SHORT)
-                    .show()
-                return@launch
-            }
-
-            val cart = cartService.getCartByUserId(userId!!)
-            if (cart == null || cart.products.isEmpty()) {
-                Toast.makeText(this@CartActivity, "Giỏ hàng trống", Toast.LENGTH_SHORT)
-                    .show()
-                return@launch
-            }
-
-            // Chuyển Map<productId, quantity> → List<CartItem>
-            val items = mutableListOf<CartItem>()
-            for ((productId, qty) in cart.products) {
-                val product = productService.getProductById(productId)
-                if (product != null) {
-                    items.add(CartItem(product, qty))
-                }
-            }
-
-            cartItems.clear()
-            cartItems.addAll(items)
-            gridAdapter.notifyDataSetChanged()
-            updateTotalPrice()
-
-            // Toggle GridView / EmptyState
-            if (cartItems.isEmpty()) {
-                gridView.visibility = View.GONE
-                emptyStateLayout.visibility = View.VISIBLE
-            } else {
-                gridView.visibility = View.VISIBLE
-                emptyStateLayout.visibility = View.GONE
-            }
-        }
-
-        btnCheckout.setOnClickListener {
-            // get product and quantity in cartItems -> createOrder
-            lifecycleScope.launch {
-                try {
-                    if (cartItems.isEmpty()) {
-                        Toast.makeText(this@CartActivity, "Giỏ hàng trống!", Toast.LENGTH_SHORT).show()
-                        return@launch
-                    }
-
-                    // 2. Tạo danh sách Order từ CartItem
-                    val orders = cartItems.map { cartItem ->
-                        Log.d("item",cartItem.product.images.toString())
-                        Order(
-                            userId = getUserIdFromSession().toString(), // ← Hàm lấy UID
-                            product = cartItem.product,
-                            quantity = cartItem.quantity,
-                            status = OrderStatus.IN_DELIVERY,
-                            totalPrice = cartItem.product.price * cartItem.quantity
-                        )
-                    }
-
-                    // 3. Gọi createOrder cho từng đơn
-                    orders.forEach { order ->
-                        orderServiceImpl.createOrder(order) // ← Hàm suspend của bạn
-                        cartService.removeProductFromCart(getUserIdFromSession().toString(), order.product.id)
-                    }
-
-                    // 4. Thành công → Xóa giỏ hàng + thông báo
-                    cartItems.clear()
-                    gridAdapter.notifyDataSetChanged()
-                    updateTotalPrice()
-
-                    // Toggle GridView / EmptyState
-                    if (cartItems.isEmpty()) {
-                        gridView.visibility = View.GONE
-                        emptyStateLayout.visibility = View.VISIBLE
-                    } else {
-                        gridView.visibility = View.VISIBLE
-                        emptyStateLayout.visibility = View.GONE
-                    }
-                    Toast.makeText(this@CartActivity, "Đặt hàng thành công!", Toast.LENGTH_LONG).show()
-
-                } catch (e: Exception) {
-                    Toast.makeText(this@CartActivity, "Lỗi: ${e.message}", Toast.LENGTH_LONG).show()
-                }
-            }
-        }
-
+        initViews()
+        setupRecyclerView()
+        setupListeners()
         handleNavigation(R.id.nav_cart)
     }
 
-    private fun updateTotalPrice() {
-        val tvTotalPrice = findViewById<TextView>(R.id.tvTotalPrice)
-        val total = cartItems.sumOf { it.product.price * it.quantity }
-        tvTotalPrice.text = "$total $"
+    /**
+     * Tải lại giỏ hàng mỗi khi quay lại màn hình
+     */
+    override fun onResume() {
+        super.onResume()
+        loadCartData()
     }
+
+    private fun initViews() {
+        recyclerCart = findViewById(R.id.recyclerCart)
+        tvTotalPrice = findViewById(R.id.tvTotalPrice)
+        btnCheckout = findViewById(R.id.btnCheckout)
+        emptyStateLayout = findViewById(R.id.empty_state_layout)
+        checkoutContainer = findViewById(R.id.checkoutContainer)
+    }
+
+    private fun setupRecyclerView() {
+        cartAdapter = CartAdapter(
+            context = this,
+            cartItems = cartItems,
+            onQuantityChange = { item, newQuantity ->
+                updateItemQuantity(item, newQuantity)
+            },
+            onDelete = { item ->
+                showDeleteConfirmDialog(item)
+            }
+        )
+        recyclerCart.adapter = cartAdapter
+    }
+
+    private fun setupListeners() {
+        btnCheckout.setOnClickListener {
+            if (cartItems.isEmpty()) {
+                Toast.makeText(this, "Giỏ hàng của bạn đang trống", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (currentUserId == null) {
+                Toast.makeText(this, "Lỗi: Không tìm thấy người dùng", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Chuyển sang CheckoutActivity
+            val intent = Intent(this, CheckoutActivity::class.java)
+            intent.putExtra("cart_items", ArrayList(cartItems))
+            startActivity(intent)
+        }
+    }
+
+    /**
+     * ⭐️ (SỬA) Cập nhật logic kiểm tra đăng nhập
+     */
+    private fun loadCartData() {
+        lifecycleScope.launch {
+            if (currentUserId == null) {
+                currentUserId = getUserIdFromSession()
+            }
+
+            // ⭐️ Nếu sau khi kiểm tra mà vẫn null -> Chuyển về Home
+            if (currentUserId == null) {
+                Toast.makeText(this@CartActivity, "Bạn chưa đăng nhập. Đang chuyển về Trang chủ...", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this@CartActivity, HomeActivity::class.java)
+                // Cờ này đảm bảo HomeActivity là Task gốc mới, xóa CartActivity khỏi stack
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                finish() // Đóng CartActivity
+                return@launch
+            }
+
+            // Nếu đã đăng nhập, tải giỏ hàng như bình thường
+            val items = cartService.getAllItems(currentUserId!!)
+            cartItems.clear()
+            cartItems.addAll(items)
+            cartAdapter.notifyDataSetChanged()
+
+            updateTotalPrice()
+            toggleEmptyState(items.isEmpty())
+        }
+    }
+
+    private fun updateItemQuantity(item: CartItem, newQuantity: Int) {
+        lifecycleScope.launch {
+            val success = cartService.updateItemQuantity(currentUserId!!, item.id, newQuantity)
+            if (success) {
+                loadCartData()
+            } else {
+                Toast.makeText(this@CartActivity, "Lỗi cập nhật", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun removeItem(item: CartItem) {
+        lifecycleScope.launch {
+            val success = cartService.removeItemFromCart(currentUserId!!, item.id)
+            if (success) {
+                loadCartData()
+            }
+        }
+    }
+
+    private fun showDeleteConfirmDialog(item: CartItem) {
+        CustomBottomSheetDialog.show(
+            context = this,
+            title = "Xóa sản phẩm?",
+            message = "Bạn có chắc muốn xóa ${item.productName} khỏi giỏ hàng?",
+            positiveText = "Xóa",
+            negativeText = "Hủy",
+            onConfirm = {
+                removeItem(item)
+            }
+        )
+    }
+
+    private fun updateTotalPrice() {
+        val total = cartItems.sumOf { it.getTotalPrice() }
+        tvTotalPrice.text = formatter.format(total)
+    }
+
+    private fun toggleEmptyState(isEmpty: Boolean) {
+        if (isEmpty) {
+            recyclerCart.visibility = View.GONE
+            checkoutContainer.visibility = View.GONE
+            emptyStateLayout.visibility = View.VISIBLE
+        } else {
+            recyclerCart.visibility = View.VISIBLE
+            checkoutContainer.visibility = View.VISIBLE
+            emptyStateLayout.visibility = View.GONE
+        }
+    }
+
 }

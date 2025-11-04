@@ -6,56 +6,69 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.suspendCancellableCoroutine
+import com.google.firebase.firestore.WriteBatch
 import kotlinx.coroutines.tasks.await
 import kotlin.coroutines.resumeWithException
 
 class FirestoreBase(private val db: FirebaseFirestore = FirebaseFirestore.getInstance()) {
 
+    // Lấy tham chiếu Document
+    fun getDocRef(collectionPath: String, id: String): com.google.firebase.firestore.DocumentReference {
+        return db.collection(collectionPath).document(id)
+    }
+
+    // Chạy Batch
+    suspend fun runBatch(batchOperation: (WriteBatch) -> Unit) {
+        val batch = db.batch()
+        batchOperation(batch)
+        batch.commit().await()
+    }
+
     // 🟢 Thêm document
     suspend fun addData(
-        collectionName: String,
+        collectionPath: String,
         data: Map<String, Any?>
     ): String {
-        val docRef = db.collection(collectionName).add(data).await()
-        Log.d("FirestoreBase", "✅ Added to $collectionName with ID: ${docRef.id}")
+        val docRef = db.collection(collectionPath).add(data).await()
+        Log.d("FirestoreBase", "✅ Added to $collectionPath with ID: ${docRef.id}")
         return docRef.id
     }
 
     // 🟢 Lấy tất cả documents
-    suspend fun getAll(collectionName: String): List<DocumentSnapshot> {
-        val result: QuerySnapshot = db.collection(collectionName).get().await()
+    suspend fun getAll(collectionPath: String): List<DocumentSnapshot> {
+        val result: QuerySnapshot = db.collection(collectionPath).get().await()
         return result.documents
     }
 
     // 🟢 Lấy document theo ID
-    suspend fun getById(collectionName: String, documentId: String): DocumentSnapshot? {
-        val doc = db.collection(collectionName).document(documentId).get().await()
+    suspend fun getById(collectionPath: String, documentId: String): DocumentSnapshot? {
+        val doc = db.collection(collectionPath).document(documentId).get().await()
         return if (doc.exists()) doc else null
     }
 
     // 🟢 Cập nhật document
     suspend fun updateData(
-        collectionName: String,
+        collectionPath: String,
         documentId: String,
         updates: Map<String, Any?>
     ) {
-        db.collection(collectionName).document(documentId).update(updates).await()
-        Log.d("FirestoreBase", "✅ Updated $collectionName/$documentId")
+        db.collection(collectionPath).document(documentId).update(updates).await()
+        Log.d("FirestoreBase", "✅ Updated $collectionPath/$documentId")
     }
 
     // 🟢 Xóa document
-    suspend fun deleteData(collectionName: String, documentId: String) {
-        db.collection(collectionName).document(documentId).delete().await()
-        Log.d("FirestoreBase", "🗑 Deleted $collectionName/$documentId")
+    suspend fun deleteData(collectionPath: String, documentId: String) {
+        db.collection(collectionPath).document(documentId).delete().await()
+        Log.d("FirestoreBase", "🗑 Deleted $collectionPath/$documentId")
     }
 
-    // 🟢 Lấy document theo field cụ thể
+    // 🟢 Lấy document theo field cụ thể (whereEqualTo)
     suspend fun getSingleBy(
-        collection: String,
+        collectionPath: String,
         property: String,
         value: Any
     ): DocumentSnapshot? {
-        val result = db.collection(collection)
+        val result = db.collection(collectionPath)
             .whereEqualTo(property, value)
             .limit(1)
             .get()
@@ -63,14 +76,29 @@ class FirestoreBase(private val db: FirebaseFirestore = FirebaseFirestore.getIns
         return result.documents.firstOrNull()
     }
 
-    // 🟢 Lấy danh sách theo thuộc tính
+    // 🟢 Lấy danh sách theo thuộc tính (whereEqualTo)
     suspend fun getListBy(
-        collection: String,
+        collectionPath: String,
         property: String,
         value: Any
     ): List<DocumentSnapshot> {
-        val result = db.collection(collection)
+        val result = db.collection(collectionPath)
             .whereEqualTo(property, value)
+            .get()
+            .await()
+        return result.documents
+    }
+
+    /**
+     * ⭐️ (MỚI) Lấy danh sách theo 'array-contains' (Dùng cho Product categories)
+     */
+    suspend fun getListByArrayContains(
+        collectionPath: String,
+        property: String,
+        value: Any
+    ): List<DocumentSnapshot> {
+        val result = db.collection(collectionPath)
+            .whereArrayContains(property, value)
             .get()
             .await()
         return result.documents

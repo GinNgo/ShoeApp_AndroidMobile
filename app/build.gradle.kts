@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.google.material)
+//    implementation(libs.firebase.storage.ktx)
 //    implementation(libs.firebase.firestore.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -62,6 +63,7 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
     implementation("androidx.appcompat:appcompat:1.7.0")   // hoặc 1.6.1, tùy phiên bản
     implementation("com.google.android.material:material:1.12.0")  // để dùng Material UI
-    implementation ("com.github.bumptech.glide:glide:4.16.0")
-
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("com.google.firebase:firebase-storage")
+//    implementation("de.hdodenhof.circleimageview:circleimageview:3.1.0")
 }

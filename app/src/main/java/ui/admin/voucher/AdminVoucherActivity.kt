@@ -13,7 +13,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
-import service.VoucherService
+import service.serviceImplement.VoucherService
 
 class AdminVoucherActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView

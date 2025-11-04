@@ -1,7 +1,7 @@
 package model
 
 import com.google.firebase.Timestamp
-import model.Order.OrderStatus
+import model.OrderStatus
 
 data class Cart (
     val id: String = "",
@@ -11,7 +11,3 @@ data class Cart (
     val exist: Boolean = true
 )
 
-data class CartItem(
-    val product: Product,
-    val quantity: Int,
-)

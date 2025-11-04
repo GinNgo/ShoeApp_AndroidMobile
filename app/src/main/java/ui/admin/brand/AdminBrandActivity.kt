@@ -13,7 +13,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
-import service.BrandService // 👈 Đổi Service
+import service.serviceImplement.BrandService // 👈 Đổi Service
 
 class AdminBrandActivity : AppCompatActivity() { // 👈 Đổi tên Class
     private lateinit var recyclerView: RecyclerView

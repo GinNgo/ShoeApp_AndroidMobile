@@ -3,22 +3,16 @@ package ui.admin.voucher
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.shoesapp.R
 import com.example.shoesapp.databinding.ActivityVoucherFormBinding
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.switchmaterial.SwitchMaterial
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.launch
 import model.DiscountType
 import model.Voucher
-import service.VoucherService
+import service.serviceImplement.VoucherService
 import java.text.SimpleDateFormat
 import java.util.*
 

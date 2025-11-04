@@ -10,7 +10,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import model.Brand // 👈 Đổi Model
-import service.BrandService // 👈 Đổi Service
+import service.serviceImplement.BrandService // 👈 Đổi Service
 import java.util.*
 
 class BrandFormActivity : AppCompatActivity() { // 👈 Đổi tên Class

@@ -7,7 +7,7 @@ import model.Product
 import org.junit.Test
 
 import org.junit.Assert.*
-import service.OrderServiceImpl
+import service.serviceImplement.OrderService
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -23,7 +23,7 @@ class ExampleUnitTest {
     @Test
      fun createOrder() = runBlocking {
         // Giả lập service
-        val orderService = OrderServiceImpl()
+        val orderService = OrderService()
 
         // Tạo product mẫu
         val product1 = Product(

@@ -1,6 +1,6 @@
 package service
 
-import model.Order.OrderFullfillment
+import model.OrderFullfillment
 
 interface IOrderFullFillmentService {
     suspend fun createOrderFullFillment(orderFullfillment: OrderFullfillment)

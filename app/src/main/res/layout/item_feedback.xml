@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <RatingBar
+        android:id="@+id/ratingBarFeedback"
+        style="?android:attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:isIndicator="true"
+        android:numStars="5"
+        android:stepSize="0.5"
+        android:progressTint="#FFD700"
+        android:progressBackgroundTint="#CCCCCC"
+        tools:rating="4.5"/>
+
+    <TextView
+        android:id="@+id/tvReviewText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        tools:text="Sản phẩm rất tốt, giao hàng nhanh!"/>
+
+    <TextView
+        android:id="@+id/tvReviewAuthor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textSize="12sp"
+        android:textColor="@android:color/darker_gray"
+        tools:text="bởi Nguyễn Văn A - 01/11/2025"/>
+
+</LinearLayout>

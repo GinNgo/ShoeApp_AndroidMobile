@@ -23,47 +23,49 @@ import com.google.android.material.chip.ChipGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch
+import model.Brand // ⭐️ (THÊM) Import Brand
 import model.Category
 import model.Product
+import model.ProductColor
 import model.ProductImage
-import model.ProductSize // ⭐️ (THÊM) Import model mới
-import service.CategoryService
-import service.ProductService
+import model.ProductSize
+import service.serviceImplement.BrandService // ⭐️ (THÊM) Import BrandService
+import service.serviceImplement.CategoryService
+import service.serviceImplement.ProductService
 
 class ProductFormActivity : AppCompatActivity() {
 
-    // --- Khai báo View (Đã cập nhật) ---
+    // --- Khai báo View ---
     private lateinit var edtName: TextInputEditText
     private lateinit var edtDescription: TextInputEditText
     private lateinit var edtPrice: TextInputEditText
-    // ⭐️ (ĐÃ XÓA) private lateinit var edtQuantity: TextInputEditText
+    private lateinit var edtSalePrice: TextInputEditText // ⭐️ (THÊM)
     private lateinit var edtMaterial: TextInputEditText
-    private lateinit var edtBrand: TextInputEditText
     private lateinit var edtSizeChart: TextInputEditText
 
-    // ⭐️ (ĐÃ SỬA) Thay Spinner bằng Nút và ChipGroup
     private lateinit var btnSelectCategories: MaterialButton
     private lateinit var chipGroupCategories: ChipGroup
+    private lateinit var spinnerBrand: AutoCompleteTextView // ⭐️ (THAY ĐỔI)
 
     private lateinit var btnAddImage: MaterialButton
     private lateinit var layoutImages: LinearLayout
     private lateinit var btnSave: MaterialButton
     private lateinit var btnPickColors: MaterialButton
-    private lateinit var layoutSelectedColors: LinearLayout // ⭐️ Đây là (LinearLayout vertical)
+    private lateinit var layoutSelectedColors: LinearLayout
     private lateinit var toolbar: MaterialToolbar
 
     // --- Khai báo Data ---
     private val productService = ProductService()
     private val categoryService = CategoryService()
+    private val brandService = BrandService() // ⭐️ (THÊM)
     private var currentProduct: Product? = null
 
-    // ⭐️ (ĐÃ SỬA) Quản lý data cho UI mới
-    private var allCategoriesList = listOf<Category>() // Danh sách tất cả category từ Firestore
-    private var selectedCategories = mutableListOf<Category>() // Danh sách category ĐÃ CHỌN
-    private var selectedColorsAndSizes = mutableListOf<Product.ProductColor>() // ⭐️ Tên mới
+    private var allCategoriesList = listOf<Category>()
+    private var allBrandsList = listOf<Brand>() // ⭐️ (THÊM)
+    private var selectedCategories = mutableListOf<Category>()
+    private var selectedColorsAndSizes = mutableListOf<ProductColor>()
     private val selectedImages = mutableListOf<ProductImage>()
 
-    // --- Activity Result Launchers (Giữ nguyên) ---
     private val pickImageLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -72,7 +74,6 @@ class ProductFormActivity : AppCompatActivity() {
         }
     }
 
-    // --- Vòng đời Activity ---
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product_form)
@@ -80,33 +81,25 @@ class ProductFormActivity : AppCompatActivity() {
         initViews()
         setupListeners()
         loadInitialData()
-//        loadCategoriesData() // ⭐️ Tải category để chuẩn bị cho Dialog
-//
-//        currentProduct = intent.getSerializableExtra("product") as? Product
-//        if (currentProduct != null) {
-//            toolbar.title = "Chỉnh sửa sản phẩm"
-//            fillFormWithProduct(currentProduct!!)
-//        } else {
-//            toolbar.title = "Thêm sản phẩm"
-//        }
     }
-    // --- Tải và Hiển thị Data (Đã viết lại) ---
 
-    // ⭐️ (SỬA) Gộp logic tải Category và lấp đầy Form vào 1 hàm
     private fun loadInitialData() {
-        lifecycleScope.launch { // Chạy trên Main thread
+        lifecycleScope.launch {
+            // Tải song song Category và Brand
+            val categoriesJob = launch { allCategoriesList = categoryService.getAllCategories() }
+            val brandsJob = launch { allBrandsList = brandService.getAllBrands() } // ⭐️ (THÊM)
 
-            // 1. Tải danh sách category (Hàm này nên dùng Dispatchers.IO bên trong Service)
-            allCategoriesList = categoryService.getAllCategories()
+            // Chờ cả hai hoàn thành
+            categoriesJob.join()
+            brandsJob.join()
 
-            // 2. Lấy sản phẩm
+            // ⭐️ (THÊM) Cài đặt spinner cho Brand
+            setupBrandSpinner()
+
             currentProduct = intent.getSerializableExtra("product") as? Product
 
-            // 3. Cập nhật UI (vẫn trên Main thread)
             if (currentProduct != null) {
                 toolbar.title = "Chỉnh sửa sản phẩm"
-                // 4. ⭐️ GỌI FILLFORM Ở ĐÂY:
-                // Bây giờ, allCategoriesList chắc chắn đã có dữ liệu
                 fillFormWithProduct(currentProduct!!)
             } else {
                 toolbar.title = "Thêm sản phẩm"
@@ -119,15 +112,12 @@ class ProductFormActivity : AppCompatActivity() {
         edtName = findViewById(R.id.edtName)
         edtDescription = findViewById(R.id.edtDescription)
         edtPrice = findViewById(R.id.edtPrice)
-        // ⭐️ (ĐÃ XÓA) edtQuantity
-        edtMaterial = findViewById(R.id.edtMaterial)
-        edtBrand = findViewById(R.id.edtBrand)
-        edtSizeChart = findViewById(R.id.edtSizeChart)
-
-        // ⭐️ (ĐÃ SỬA) Ánh xạ view cho Category
+        edtSalePrice = findViewById(R.id.edtSalePrice) // ⭐️ (THÊM)
+//        edtMaterial = findViewById(R.id.edtMaterial)
+        spinnerBrand = findViewById(R.id.spinnerBrand) // ⭐️ (THAY ĐỔI)
+//        edtSizeChart = findViewById(R.id.edtSizeChart)
         btnSelectCategories = findViewById(R.id.btnSelectCategories)
         chipGroupCategories = findViewById(R.id.chipGroupCategories)
-
         btnAddImage = findViewById(R.id.btnAddImage)
         layoutImages = findViewById(R.id.layoutImages)
         btnSave = findViewById(R.id.btnSave)
@@ -136,20 +126,18 @@ class ProductFormActivity : AppCompatActivity() {
     }
 
     private fun setupListeners() {
+        // ... (Giữ nguyên các listener cho toolbar, btnAddImage, btnPickColors) ...
         toolbar.setNavigationOnClickListener { finish() }
-
         btnAddImage.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK).apply { type = "image/*" }
             pickImageLauncher.launch(intent)
         }
-
-        // ⭐️ (ĐÃ SỬA) Listener cho 2 nút mới
         btnSelectCategories.setOnClickListener { showCategoryMultiSelectDialog() }
-        btnPickColors.setOnClickListener { showColorPickerDialog() } // ⭐️ Vẫn dùng dialog cũ để chọn màu
+        btnPickColors.setOnClickListener { showColorPickerDialog() }
 
         btnSave.setOnClickListener {
             val product = collectProductData()
-            if (product == null) return@setOnClickListener // ⭐️ Thêm kiểm tra validation
+            if (product == null) return@setOnClickListener
 
             lifecycleScope.launch {
                 val success = if (currentProduct == null) {
@@ -157,52 +145,55 @@ class ProductFormActivity : AppCompatActivity() {
                 } else {
                     productService.updateProduct(product.copy(id = currentProduct!!.id))
                 }
-
                 Toast.makeText(
                     this@ProductFormActivity,
                     if (success) "Lưu sản phẩm thành công!" else "Thao tác thất bại!",
                     Toast.LENGTH_SHORT
                 ).show()
-
                 if (success) finish()
             }
         }
     }
 
-    // --- Tải và Hiển thị Data (Đã viết lại) ---
-
-    private fun loadCategoriesData() {
-        lifecycleScope.launch {
-            allCategoriesList = categoryService.getAllCategories()
-            // Tải xong, sẵn sàng để mở dialog
+    // ⭐️ (MỚI) Hàm cài đặt Brand Spinner
+    private fun setupBrandSpinner() {
+        if (allBrandsList.isNotEmpty()) {
+            val brandNames = allBrandsList.map { it.name }
+            val adapter = ArrayAdapter(
+                this@ProductFormActivity,
+                R.layout.list_item_dropdown, // Dùng chung layout
+                brandNames
+            )
+            spinnerBrand.setAdapter(adapter)
         }
     }
+
 
     private fun fillFormWithProduct(product: Product) {
         edtName.setText(product.name)
         edtDescription.setText(product.description)
         edtPrice.setText(product.price.toString())
-        edtMaterial.setText(product.material)
-        edtBrand.setText(product.brand)
-        edtSizeChart.setText(product.sizeChartUrl)
+        edtSalePrice.setText(product.salePrice?.toString() ?: "") // ⭐️ (THÊM)
+//        edtMaterial.setText(product.material)
+//        edtSizeChart.setText(product.sizeChartUrl)
 
-        // ⭐️ (SỬA) Hiển thị Category đã chọn
+        // ⭐️ (SỬA) Hiển thị Brand đã chọn
+        val selectedBrand = allBrandsList.find { it.id == product.brandId }
+        spinnerBrand.setText(selectedBrand?.name ?: "", false)
+
+        // ... (Giữ nguyên logic fill Category, Color, Image) ...
         selectedCategories.clear()
         product.categoryIds.forEach { catId ->
             allCategoriesList.find { it.id == catId }?.let { selectedCategories.add(it) }
         }
         updateCategoryChipsUI()
 
-        // ⭐️ (SỬA) Hiển thị Màu và Size đã chọn
         selectedColorsAndSizes.clear()
-        // ⭐️ Cần xử lý data từ Firestore (có thể là Map) về data class
         product.colors.forEach { colorData ->
             when (colorData) {
-                is Product.ProductColor -> {
-                    // Nếu data đã là ProductColor (chứa List<ProductSize>)
+                is ProductColor -> {
                     selectedColorsAndSizes.add(colorData)
                 }
-                // ⭐️ Xử lý nếu data từ Firestore là Map (quan trọng)
                 is Map<*, *> -> {
                     try {
                         val hex = colorData["hexCode"] as? String ?: "#000000"
@@ -214,16 +205,15 @@ class ProductFormActivity : AppCompatActivity() {
                                     stockQuantity = (sizeMap["stockQuantity"] as? Long)?.toInt() ?: 0
                                 )
                             }
-                        selectedColorsAndSizes.add(Product.ProductColor(hex, name, sizesList))
+                        selectedColorsAndSizes.add(ProductColor(hex, name, sizesList))
                     } catch (e: Exception) {
                         Log.e("ProductForm", "Lỗi parse màu từ Map: $e")
                     }
                 }
             }
         }
-        updateSelectedColorsUI() // ⭐️ Hàm này đã được viết lại hoàn toàn
+        updateSelectedColorsUI()
 
-        // Hiển thị ảnh (Giữ nguyên)
         selectedImages.clear()
         product.images?.let { selectedImages.addAll(it) }
         refreshImageUI()
@@ -236,14 +226,24 @@ class ProductFormActivity : AppCompatActivity() {
             return null
         }
 
-        // ⭐️ (SỬA) Lấy danh sách ID category
+        // ⭐️ (SỬA) Lấy Brand ID
+        val selectedBrandName = spinnerBrand.text.toString()
+        val selectedBrand = allBrandsList.find { it.name == selectedBrandName }
+        if (selectedBrand == null) {
+            Toast.makeText(this, "Vui lòng chọn thương hiệu", Toast.LENGTH_SHORT).show()
+            return null
+        }
+
+        // ⭐️ (SỬA) Lấy Sale Price
+        val price = edtPrice.text.toString().toDoubleOrNull() ?: 0.0
+        val salePrice = edtSalePrice.text.toString().toDoubleOrNull() // 👈 Lấy giá trị
+
+        // ... (Giữ nguyên logic lấy Category, Color) ...
         val categoryIds = selectedCategories.map { it.id }
         if (categoryIds.isEmpty()) {
             Toast.makeText(this, "Vui lòng chọn ít nhất 1 danh mục", Toast.LENGTH_SHORT).show()
             return null
         }
-
-        // ⭐️ (SỬA) Lấy danh sách màu và size
         if (selectedColorsAndSizes.isEmpty()) {
             Toast.makeText(this, "Vui lòng thêm ít nhất 1 màu", Toast.LENGTH_SHORT).show()
             return null
@@ -253,19 +253,23 @@ class ProductFormActivity : AppCompatActivity() {
             id = currentProduct?.id ?: "",
             name = name,
             description = edtDescription.text.toString(),
-            price = edtPrice.text.toString().toDoubleOrNull() ?: 0.0,
-            // ⭐️ (ĐÃ XÓA) stockQuantity
-            colors = selectedColorsAndSizes, // ⭐️ Data mới
-            material = edtMaterial.text.toString(),
-            brand = edtBrand.text.toString(),
-            sizeChartUrl = edtSizeChart.text.toString(),
-            categoryIds = categoryIds, // ⭐️ Data mới
+            price = price,
+            salePrice = salePrice, // ⭐️ (THÊM)
+            colors = selectedColorsAndSizes,
+//            material = edtMaterial.text.toString(),
+            brandId = selectedBrand.id, // ⭐️ (THAY ĐỔI)
+//            sizeChartUrl = edtSizeChart.text.toString(),
+            categoryIds = categoryIds,
             images = selectedImages
         )
     }
 
-    // --- Logic Quản lý Category (Mới) ---
-
+    //
+    // --- (TẤT CẢ CÁC HÀM BÊN DƯỚI GIỮ NGUYÊN) ---
+    // (showCategoryMultiSelectDialog, updateCategoryChipsUI, showColorPickerDialog,
+    //  updateSelectedColorsUI, showAddSizeDialog, updateSizeChipsUI,
+    //  addImage, refreshImageUI, updateImageBorders)
+    //
     private fun showCategoryMultiSelectDialog() {
         val categoryNames = allCategoriesList.map { it.name }.toTypedArray()
         val checkedItems = BooleanArray(allCategoriesList.size) { i ->
@@ -305,49 +309,40 @@ class ProductFormActivity : AppCompatActivity() {
         }
     }
 
-    // --- Logic Quản lý Màu & Size (Viết lại hoàn toàn) ---
-
     private fun showColorPickerDialog() {
-        // 1. Định nghĩa các màu cơ bản
         val availableColors = listOf(
-            Product.ProductColor(hexCode = "#FF0000", name = "Đỏ"),
-            Product.ProductColor(hexCode = "#0000FF", name = "Xanh dương"),
-            Product.ProductColor(hexCode = "#00FF00", name = "Xanh lá"),
-            Product.ProductColor(hexCode = "#FFFF00", name = "Vàng"),
-            Product.ProductColor(hexCode = "#000000", name = "Đen"),
-            Product.ProductColor(hexCode = "#FFFFFF", name = "Trắng")
-            // Bạn có thể thêm nhiều màu hơn
+            ProductColor(hexCode = "#FF0000", name = "Đỏ"),
+            ProductColor(hexCode = "#0000FF", name = "Xanh dương"),
+            ProductColor(hexCode = "#00FF00", name = "Xanh lá"),
+            ProductColor(hexCode = "#FFFF00", name = "Vàng"),
+            ProductColor(hexCode = "#000000", name = "Đen"),
+            ProductColor(hexCode = "#FFFFFF", name = "Trắng")
         )
 
         val colorNames = availableColors.map { it.name }.toTypedArray()
-        // 2. Kiểm tra xem màu nào đã được chọn (chỉ để tick)
         val checkedItems = BooleanArray(availableColors.size) { i ->
             selectedColorsAndSizes.any { it.hexCode == availableColors[i].hexCode }
         }
 
-        // 3. Hiển thị dialog chọn MÀU (chưa chọn size)
         AlertDialog.Builder(this)
             .setTitle("Chọn màu cho sản phẩm")
             .setMultiChoiceItems(colorNames, checkedItems) { _, which, isChecked ->
                 val color = availableColors[which]
                 if (isChecked) {
-                    // Nếu thêm màu mới, tạo 1 đối tượng mới với danh sách size rỗng
                     if (selectedColorsAndSizes.none { it.hexCode == color.hexCode }) {
-                        selectedColorsAndSizes.add(Product.ProductColor(color.hexCode, color.name, emptyList()))
+                        selectedColorsAndSizes.add(ProductColor(color.hexCode, color.name, emptyList()))
                     }
                 } else {
-                    // Nếu bỏ chọn, xóa màu khỏi danh sách
                     selectedColorsAndSizes.removeIf { it.hexCode == color.hexCode }
                 }
             }
             .setPositiveButton("OK") { dialog, _ ->
                 dialog.dismiss()
-                updateSelectedColorsUI() // ⭐️ Cập nhật UI hiển thị các card quản lý size
+                updateSelectedColorsUI()
             }
             .show()
     }
 
-    // ⭐️ (SỬA) Hàm này giờ sẽ inflate layout item_color_variant
     private fun updateSelectedColorsUI() {
         layoutSelectedColors.removeAllViews()
 
@@ -361,21 +356,16 @@ class ProductFormActivity : AppCompatActivity() {
         }
 
         selectedColorsAndSizes.forEach { color ->
-            // 1. Inflate layout item_color_variant.xml
             val inflater = LayoutInflater.from(this)
             val colorVariantView = inflater.inflate(R.layout.item_color_variant, layoutSelectedColors, false)
-
-            // 2. Ánh xạ các view bên trong item
             val tvColorName = colorVariantView.findViewById<TextView>(R.id.tvColorName)
             val viewColorOval = colorVariantView.findViewById<View>(R.id.viewColorOval)
             val btnRemoveColor = colorVariantView.findViewById<ImageButton>(R.id.btnRemoveColor)
             val btnAddSize = colorVariantView.findViewById<MaterialButton>(R.id.btnAddSize)
             val chipGroupSizes = colorVariantView.findViewById<ChipGroup>(R.id.chipGroupSizes)
 
-            // 3. Set data
             tvColorName.text = "${color.name} (${color.hexCode})"
 
-            // 3.1. Set màu cho hình tròn
             val drawable = GradientDrawable().apply {
                 shape = GradientDrawable.OVAL
                 setColor(Color.parseColor(color.hexCode))
@@ -383,26 +373,21 @@ class ProductFormActivity : AppCompatActivity() {
             }
             viewColorOval.background = drawable
 
-            // 4. Set Listeners
             btnRemoveColor.setOnClickListener {
                 selectedColorsAndSizes.remove(color)
-                updateSelectedColorsUI() // Tải lại toàn bộ UI
+                updateSelectedColorsUI()
             }
 
             btnAddSize.setOnClickListener {
-                showAddSizeDialog(color) // ⭐️ Hiển thị dialog thêm size cho MÀU NÀY
+                showAddSizeDialog(color)
             }
 
-            // 5. Hiển thị các Size đã có của màu này (dạng Chip)
             updateSizeChipsUI(chipGroupSizes, color)
-
-            // 6. Thêm card này vào LinearLayout
             layoutSelectedColors.addView(colorVariantView)
         }
     }
 
-    // ⭐️ (MỚI) Hiển thị dialog để thêm size/tồn kho
-    private fun showAddSizeDialog(colorToEdit: Product.ProductColor) {
+    private fun showAddSizeDialog(colorToEdit: ProductColor) {
         val inflater = LayoutInflater.from(this)
         val dialogView = inflater.inflate(R.layout.dialog_add_size, null)
         val edtSizeName = dialogView.findViewById<TextInputEditText>(R.id.edtDialogSizeName)
@@ -420,22 +405,15 @@ class ProductFormActivity : AppCompatActivity() {
                     return@setPositiveButton
                 }
 
-                // 1. Tạo đối tượng ProductSize
                 val newSize = ProductSize(sizeName, stock)
-
-                // 2. Cập nhật danh sách sizes bên trong đối tượng ProductColor
-                // ⭐️ Đây là phần magic: vì colorToEdit là 1 object reference,
-                // việc cập nhật nó cũng là cập nhật trong list selectedColorsAndSizes
                 val currentSizes = colorToEdit.sizes.toMutableList()
                 currentSizes.add(newSize)
 
-                // 3. Tìm index của màu và thay thế nó bằng 1 bản copy mới
                 val index = selectedColorsAndSizes.indexOf(colorToEdit)
                 if (index != -1) {
                     selectedColorsAndSizes[index] = colorToEdit.copy(sizes = currentSizes)
                 }
 
-                // 4. Cập nhật lại UI
                 updateSelectedColorsUI()
                 dialog.dismiss()
             }
@@ -443,24 +421,20 @@ class ProductFormActivity : AppCompatActivity() {
             .show()
     }
 
-    // ⭐️ (MỚI) Cập nhật các chip size cho 1 màu cụ thể
-    private fun updateSizeChipsUI(chipGroup: ChipGroup, color: Product.ProductColor) {
+    private fun updateSizeChipsUI(chipGroup: ChipGroup, color: ProductColor) {
         chipGroup.removeAllViews()
         color.sizes.forEach { size ->
             val chip = Chip(this).apply {
                 text = "Size ${size.size}: ${size.stockQuantity} tồn"
                 isCloseIconVisible = true
                 setOnCloseIconClickListener {
-                    // Xóa size này khỏi list
                     val currentSizes = color.sizes.toMutableList()
                     currentSizes.remove(size)
 
-                    // Cập nhật lại object color
                     val index = selectedColorsAndSizes.indexOf(color)
                     if (index != -1) {
                         selectedColorsAndSizes[index] = color.copy(sizes = currentSizes)
                     }
-                    // Tải lại toàn bộ UI
                     updateSelectedColorsUI()
                 }
             }
@@ -468,17 +442,13 @@ class ProductFormActivity : AppCompatActivity() {
         }
     }
 
-
-    // --- Logic Quản lý Ảnh (Giữ nguyên) ---
     private fun addImage(uri: Uri) {
-        // (Giữ nguyên code)
         val newImage = ProductImage(uri.toString(), isPrimary = selectedImages.isEmpty())
         selectedImages.add(newImage)
         refreshImageUI()
     }
 
     private fun refreshImageUI() {
-        // (Giữ nguyên code)
         layoutImages.removeAllViews()
         selectedImages.forEach { img ->
             val imageView = ImageView(this).apply {
@@ -512,7 +482,6 @@ class ProductFormActivity : AppCompatActivity() {
     }
 
     private fun updateImageBorders(imageView: ImageView, isPrimary: Boolean) {
-        // (Giữ nguyên code)
         val border = GradientDrawable().apply {
             shape = GradientDrawable.RECTANGLE
             cornerRadius = 8f

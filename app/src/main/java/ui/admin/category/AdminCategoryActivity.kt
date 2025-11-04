@@ -13,7 +13,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
-import service.CategoryService
+import service.serviceImplement.CategoryService
 
 class AdminCategoryActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView

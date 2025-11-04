@@ -1,6 +1,6 @@
 package repository
 
-import model.Order.OrderFullfillment
+import model.OrderFullfillment
 
 interface IOrderFullFillmentRepository {
     suspend fun createOrderFullFillment(orderFullfillment: OrderFullfillment)

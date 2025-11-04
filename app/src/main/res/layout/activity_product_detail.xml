@@ -5,26 +5,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white">
-    <FrameLayout
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutImageContainer"
         android:layout_width="0dp"
-        android:layout_height="200dp"
+        android:layout_height="250dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Ảnh sản phẩm -->
-        <ImageView
-            android:id="@+id/imgProduct"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPagerImageSlider"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_shoe_adidas10"
-            android:scaleType="centerInside"
-            android:background="#E9E9E9"
+            android:background="#E9E9E9" />
 
-            tools:ignore="ContentDescription" />
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayoutIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="2dp"
+            android:background="@android:color/transparent"
+            app:tabBackground="@drawable/tab_selector"
+            app:tabIndicatorHeight="0dp"
+            app:tabGravity="center"/>
 
-        <!-- Nút back (đè lên trên ảnh) -->
         <ImageButton
             android:id="@+id/btnBack"
             android:layout_width="40dp"
@@ -32,280 +40,288 @@
             android:src="@drawable/ic_arrow_back"
             android:scaleType="centerInside"
             android:padding="8dp"
-            android:layout_margin="10dp"
-            android:layout_gravity="start|top"
-            android:background="#E9E9E9"
+            android:layout_margin="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/bg_circle_white_solid"
             app:tint="@android:color/black"
             tools:ignore="ContentDescription" />
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-    <!-- Tên sản phẩm -->
     <TextView
-        android:id="@+id/txtTitle"
+        android:id="@+id/txtOutOfStockOverlay"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/suga_leather_shoes"
-        android:textSize="20sp"
+        android:layout_height="0dp"
+        android:background="#AAFFFFFF"
+        android:gravity="center"
+        android:text="HẾT HÀNG"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="32sp"
         android:textStyle="bold"
-        android:layout_marginStart="16dp"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/layoutImageContainer"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btnFavorite"
-        android:layout_marginTop="12dp"/>
-
-    <!-- Favorite -->
-    <ImageButton
-        android:id="@+id/btnFavorite"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@android:color/transparent"
-        android:backgroundTint="@color/black"
-        android:src="@drawable/ic_favorite_border"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintTop_toTopOf="@id/txtTitle"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="ContentDescription" />
-    <LinearLayout
-        android:id="@+id/linearLayoutSold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/txtTitle"
-        app:layout_constraintStart_toStartOf="@id/txtTitle"
-        android:layout_marginTop="8dp"
-        >
-    <!-- Sold Tag -->
-    <TextView
-        android:id="@+id/txtSold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="7,483 sold"
-        android:textSize="12sp"
-        android:background="@drawable/bg_tag"
-        android:padding="4dp"
-        android:layout_marginEnd="12dp"
-        tools:ignore="HardcodedText" />
+        android:elevation="10dp"
+        tools:visibility="visible"/>
 
-    <!-- Rating -->
-    <TextView
-        android:id="@+id/txtRating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="⭐ 4.7 (5,387 reviews)"
-        android:textSize="12sp"
-        android:textColor="@android:color/darker_gray"
-        tools:ignore="HardcodedText" />
-    </LinearLayout>
-    <!-- Description -->
-    <TextView
-        android:id="@+id/txtDescription"
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit..."
-        android:textSize="14sp"
-        android:textColor="@android:color/darker_gray"
-        app:layout_constraintTop_toBottomOf="@id/linearLayoutSold"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/layoutImageContainer"
+        app:layout_constraintBottom_toTopOf="@id/layoutBottom"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        tools:ignore="HardcodedText" />
+        android:fillViewport="true">
 
-    <!-- Size -->
-    <TextView
-        android:id="@+id/txtSizeLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Size"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/txtDescription"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        tools:ignore="HardcodedText" />
-
-    <LinearLayout
-        android:id="@+id/layoutSize"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/txtSizeLabel"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp">
-
-        <TextView
-            android:id="@+id/btnSize39"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:background="@drawable/bg_circle_selector"
-            android:gravity="center"
-            android:text="39"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:includeFontPadding="false"
-            android:clickable="true"
-            android:focusable="true"
-            tools:ignore="HardcodedText" />
-
-        <TextView
-            android:id="@+id/btnSize40"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/bg_circle_selector"
-            android:gravity="center"
-            android:text="40"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:includeFontPadding="false"
-            android:clickable="true"
-            android:focusable="true"
-            tools:ignore="HardcodedText" />
-
-        <TextView
-            android:id="@+id/btnSize41"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/bg_circle_selector"
-            android:gravity="center"
-            android:text="41"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:includeFontPadding="false"
-            android:clickable="true"
-            android:focusable="true"
-            tools:ignore="HardcodedText" />
-
-        <TextView
-            android:id="@+id/btnSize42"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/bg_circle_selector"
-            android:gravity="center"
-            android:text="42"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:includeFontPadding="false"
-            android:clickable="true"
-            android:focusable="true"
-            tools:ignore="HardcodedText" />
-    </LinearLayout>
-
-    <!-- Color -->
-    <TextView
-        android:id="@+id/txtColorLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Color"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/layoutSize"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        tools:ignore="HardcodedText" />
-
-    <LinearLayout
-        android:id="@+id/layoutColor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/txtColorLabel"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp">
-
-        <View
-            android:id="@+id/colorBrown"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:background="@drawable/bg_circle"
-            android:backgroundTint="#6B4F3B"/>
-        <View
-            android:id="@+id/colorGray"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="12dp"
-            android:background="@drawable/bg_circle"
-            android:backgroundTint="#808080"/>
-        <View
-            android:id="@+id/colorLightGray"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="12dp"
-            android:background="@drawable/bg_circle"
-            android:backgroundTint="#C0C0C0"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layoutQuantity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginTop="18dp"
-        app:layout_constraintTop_toBottomOf="@id/layoutColor"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp">
-        <!-- Quantity -->
-        <TextView
-            android:id="@+id/txtQuantityLabel"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Quantity"
-            android:textStyle="bold"
-            tools:ignore="HardcodedText"
-            android:layout_marginEnd="14dp"/>
-
-        <LinearLayout
-            android:id="@+id/layoutQuantityUpdate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:background="@drawable/bg_quantity"
-            android:padding="4dp"
-            app:layout_constraintTop_toBottomOf="@id/txtQuantityLabel"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <ImageButton
-                android:id="@+id/btnMinus"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_minus"
-                android:background="@drawable/bg_quantity"
-                app:tint="@android:color/black"
-                tools:ignore="ContentDescription" />
+            android:padding="16dp">
 
             <TextView
-                android:id="@+id/txtQuantity"
-                android:layout_width="wrap_content"
+                android:id="@+id/txtTitle"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="2"
-                android:textSize="18sp"
-                android:layout_marginHorizontal="12dp"
-                tools:ignore="HardcodedText" />
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btnFavorite"
+                tools:text="Suga Leather Shoes (Tên sản phẩm có thể rất dài và xuống 2 dòng)"/>
 
             <ImageButton
-                android:id="@+id/btnPlus"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_plus"
-                android:background="@drawable/bg_quantity"
-                app:tint="@android:color/black"
+                android:id="@+id/btnFavorite"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_favorite_border"
+                app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
                 tools:ignore="ContentDescription" />
-        </LinearLayout>
 
-    </LinearLayout>
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrierTopRow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="txtTitle, btnFavorite" />
+            <TextView
+            android:id="@+id/txtOriginalPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp" android:textColor="@android:color/darker_gray"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
 
-    <!-- Price + Add to Cart -->
+            app:layout_constraintTop_toBottomOf="@id/barrierTopRow"
+
+            tools:text="3.000.000đ" />
+
+            <TextView
+                android:id="@+id/txtSalePrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/txtOriginalPrice"
+
+                app:layout_constraintBaseline_toBaselineOf="@id/txtOriginalPrice"
+
+                tools:text="2.599.000đ" />
+
+
+            <LinearLayout
+                android:id="@+id/linearLayoutSold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/txtSalePrice"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="8dp" >
+                <TextView
+                    android:id="@+id/txtSold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="7,483 sold"
+                    android:textSize="12sp"
+                    android:background="@drawable/bg_tag"
+                    android:padding="4dp"
+                    android:layout_marginEnd="12dp" />
+                <TextView
+                    android:id="@+id/txtRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="⭐ 4.7 (5,387 reviews)"
+                    android:textSize="12sp"
+                    android:textColor="@android:color/darker_gray"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txtDescription"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@android:color/darker_gray"
+                app:layout_constraintTop_toBottomOf="@id/linearLayoutSold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="12dp"
+                tools:text="Lorem ipsum dolor sit amet..." />
+
+            <TextView
+                android:id="@+id/txtColorLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Màu sắc"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/txtDescription"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="16dp" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupColor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@id/txtColorLabel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:singleSelection="true"
+                app:chipSpacingHorizontal="8dp"/>
+
+            <TextView
+                android:id="@+id/txtSizeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Size"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/chipGroupColor"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="16dp" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupSize"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@id/txtSizeLabel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:singleSelection="true"
+                app:chipSpacingHorizontal="8dp"/>
+
+            <TextView
+                android:id="@+id/txtStockInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:textColor="?attr/colorPrimary"
+                android:textStyle="italic"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/chipGroupSize"
+                tools:text="Chỉ còn 5 sản phẩm" />
+
+            <LinearLayout
+                android:id="@+id/layoutQuantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="18dp"
+                app:layout_constraintTop_toBottomOf="@id/txtStockInfo"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:id="@+id/txtQuantityLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Số lượng"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="14dp"/>
+                <LinearLayout
+                    android:id="@+id/layoutQuantityUpdate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/bg_quantity"
+                    android:padding="4dp">
+                    <ImageButton
+                        android:id="@+id/btnMinus"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_minus"
+                        android:background="@drawable/bg_quantity"
+                        app:tint="@android:color/black" />
+                    <TextView
+                        android:id="@+id/txtQuantity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:textSize="18sp"
+                        android:layout_marginHorizontal="12dp" />
+                    <ImageButton
+                        android:id="@+id/btnPlus"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_plus"
+                        android:background="@drawable/bg_quantity"
+                        app:tint="@android:color/black" />
+                </LinearLayout>
+            </LinearLayout>
+            <View
+                android:id="@+id/dividerReviews"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="#E0E0E0"
+                android:layout_marginTop="24dp"
+                app:layout_constraintTop_toBottomOf="@id/layoutQuantity"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/txtReviewLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đánh giá sản phẩm"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/dividerReviews"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tvEmptyReviews"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chưa có đánh giá nào."
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                tools:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@id/txtReviewLabel"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerReviews"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/tvEmptyReviews"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                    tools:listitem="@layout/item_feedback"
+                tools:itemCount="2" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+
     <LinearLayout
         android:id="@+id/layoutBottom"
         android:layout_width="0dp"
@@ -315,9 +331,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp">
+        android:padding="16dp"
+        android:elevation="4dp"
+        android:background="@android:color/white">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -328,19 +344,18 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Total price"
+                android:text="Tổng tiền"
                 android:textSize="12sp"
-                android:textColor="@android:color/darker_gray"
-                tools:ignore="HardcodedText" />
+                android:textColor="@android:color/darker_gray" />
 
             <TextView
                 android:id="@+id/txtPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="$750.00"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                tools:ignore="HardcodedText" />
+                android:textColor="?attr/colorPrimary"
+                tools:text="2.599.000đ" />
         </LinearLayout>
 
         <Button
@@ -348,11 +363,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@android:color/black"
-            android:text="Add to Cart"
+            android:text="Thêm vào giỏ"
             android:textColor="@android:color/white"
             android:paddingHorizontal="24dp"
             android:paddingVertical="12dp"
-            tools:ignore="HardcodedText" />
+            app:icon="@drawable/ic_cart" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

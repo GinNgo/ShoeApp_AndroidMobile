@@ -1,7 +1,9 @@
 package service
 
-import model.Order.FeedBack
+import model.FeedBack
+import model.Order
 
 interface IFeedBackService {
-    suspend fun createFeedBack(feedBack: FeedBack)
+    suspend fun createFeedBack(feedBack: FeedBack, orderToUpdate: Order): Boolean
+    suspend fun getFeedbacksForProduct(productId: String): List<FeedBack>
 }

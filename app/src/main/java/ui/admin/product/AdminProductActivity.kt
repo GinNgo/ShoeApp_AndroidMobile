@@ -8,14 +8,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoesapp.R
-import ui.admin.product.ProductFormActivity
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import model.Product
-import service.ProductService
+import service.serviceImplement.ProductService
 
 class AdminProductActivity : AppCompatActivity() {
 

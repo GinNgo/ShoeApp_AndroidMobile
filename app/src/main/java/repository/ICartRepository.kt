@@ -1,11 +1,11 @@
 package repository
 
-import model.Cart
+import model.CartItem
 
-interface ICartRepository{
-    suspend fun createCartForUser(userId: String)
-    suspend fun getCartByUserId(userId: String): Cart?
-    suspend fun addProductInCart(cartId: String, productId: String)
-    suspend fun addProductInCart(cartId: String, productId: String, quantity: Int)
-    suspend fun deleteProductOutOfCart(cartId: String, productId: String)
+interface ICartRepository {
+    suspend fun getAllItems(userId: String): List<CartItem>
+    suspend fun addItem(userId: String, item: CartItem): Boolean
+    suspend fun removeItem(userId: String, cartItemId: String): Boolean
+    suspend fun updateQuantity(userId: String, cartItemId: String, newQuantity: Int): Boolean
+    suspend fun clearCart(userId: String): Boolean
 }

@@ -42,7 +42,7 @@
         android:id="@+id/btnEditProduct"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:src="@drawable/ic_edit"
+        android:src="@drawable/ic_edit2"
         app:navigationIconTint="@color/black"
         android:padding="4dp"
         android:contentDescription="Sửa"

@@ -7,17 +7,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.shoesapp.R
-import com.example.shoesapp.databinding.ActivityAdminBinding
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.card.MaterialCardView
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import model.Category
-import model.Product
-import service.BrandService // 👈 Thêm Service
-import service.CategoryService // 👈 Thêm Service
-import service.ProductService
-import service.VoucherService
+import service.serviceImplement.BrandService // 👈 Thêm Service
+import service.serviceImplement.CategoryService // 👈 Thêm Service
+import service.serviceImplement.ProductService
+import service.serviceImplement.VoucherService
 import ui.admin.brand.AdminBrandActivity // 👈 Thêm Activity
 import ui.admin.category.AdminCategoryActivity
 import ui.admin.product.AdminProductActivity

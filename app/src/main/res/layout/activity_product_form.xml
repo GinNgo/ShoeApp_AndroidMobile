@@ -63,7 +63,7 @@
                 android:id="@+id/layoutPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Giá"
+                android:hint="Giá Gốc (VD: 3000000)"
                 android:layout_marginBottom="8dp">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edtPrice"
@@ -73,40 +73,59 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutMaterial"
+                android:id="@+id/layoutSalePrice"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Chất liệu"
+                android:hint="Giá Khuyến Mãi (Bỏ trống nếu không sale)"
+                app:helperText="Nhập giá sau khi giảm (VD: 2500000)"
                 android:layout_marginBottom="8dp">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtMaterial"
+                    android:id="@+id/edtSalePrice"
+                    android:inputType="numberDecimal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </com.google.android.material.textfield.TextInputLayout>
 
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                android:id="@+id/layoutMaterial"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:hint="Chất liệu"-->
+<!--                android:layout_marginBottom="8dp">-->
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:id="@+id/edtMaterial"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"/>-->
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutBrand"
+                android:id="@+id/layoutSpinnerBrand"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Thương hiệu"
                 android:layout_marginBottom="8dp">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtBrand"
+                <AutoCompleteTextView
+                    android:id="@+id/spinnerBrand"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    tools:text="Nike"
+                    />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutSizeChart"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Bảng size (URL)"
-                android:layout_marginBottom="8dp">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtSizeChart"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-            </com.google.android.material.textfield.TextInputLayout>
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                android:id="@+id/layoutSizeChart"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:hint="Bảng size (URL)"-->
+<!--                android:layout_marginBottom="8dp">-->
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:id="@+id/edtSizeChart"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"/>-->
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
 
             <TextView
                 android:layout_width="wrap_content"

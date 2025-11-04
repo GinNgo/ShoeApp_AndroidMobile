@@ -11,7 +11,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 import org.junit.Assert.*
-import service.OrderServiceImpl
+import service.serviceImplement.OrderService
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -30,7 +30,7 @@ class ExampleInstrumentedTest {
     @Test
     fun createOrder() = runBlocking {
         // Giả lập service
-        val orderService = OrderServiceImpl()
+        val orderService = OrderService()
 
         // Tạo product mẫu
         val product1 = Product(

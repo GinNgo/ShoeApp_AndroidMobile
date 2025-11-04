@@ -2,7 +2,6 @@ package ui.admin.category
 
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.shoesapp.databinding.ActivityCategoryFormBinding
@@ -10,7 +9,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import model.Category
-import service.CategoryService
+import service.serviceImplement.CategoryService
 import java.util.*
 
 class CategoryFormActivity : AppCompatActivity() {

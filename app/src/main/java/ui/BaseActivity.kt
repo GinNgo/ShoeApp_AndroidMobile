@@ -4,8 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import com.example.shoesapp.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import service.UserService
-import ui.home.CartActivity
+import service.serviceImplement.UserService
+import ui.cart.CartActivity
 import ui.home.HomeActivity
 import ui.home.OrderActivity
 import utils.SessionManager

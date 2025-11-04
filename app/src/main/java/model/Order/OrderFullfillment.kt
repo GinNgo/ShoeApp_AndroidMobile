@@ -1,4 +1,4 @@
-package model.Order
+package model
 
 import com.google.firebase.Timestamp
 
