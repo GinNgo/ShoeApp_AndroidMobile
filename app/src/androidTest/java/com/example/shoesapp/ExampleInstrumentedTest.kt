@@ -53,20 +53,6 @@ class ExampleInstrumentedTest {
                 quantity = 2,
                 status = OrderStatus.IN_DELIVERY,
                 totalPrice = product1.price * 2
-            ),
-            Order(
-                userId = "user123",
-                product = product2,
-                quantity = 1,
-                status = OrderStatus.COMPLETE,
-                totalPrice = product2.price
-            ),
-            Order(
-                userId = "user123",
-                product = product1,
-                quantity = 3,
-                status = OrderStatus.CANCEL,
-                totalPrice = product1.price * 3
             )
         )
 

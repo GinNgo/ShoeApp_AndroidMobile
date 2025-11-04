@@ -1,11 +1,15 @@
 package model
 
 import android.content.Context
+import com.google.firebase.firestore.PropertyName
 import java.io.Serializable
 import java.util.Date
 
 data class ProductImage(
     val imageUrl: String = "",
+
+    @PropertyName("isPrimary")   // ÉP LƯU THÀNH "isPrimary"
+    @get:PropertyName("isPrimary")  // ĐỌC LẠI CŨNG DÙNG "isPrimary"
     val isPrimary: Boolean = false
 ) : Serializable
 

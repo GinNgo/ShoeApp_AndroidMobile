@@ -1,10 +1,12 @@
 package repository
 
+import android.util.Log
 import com.google.firebase.Timestamp
 import data.FirestoreBase
 import model.Order.Order
 import model.Order.OrderStatus
 import model.Product
+import model.ProductImage
 
 class OrderRepository(
     private val firestore: FirestoreBase = FirestoreBase(),
@@ -12,6 +14,7 @@ class OrderRepository(
 ) : IOrderRepository {
 
     override suspend fun createOrder(order: Order) {
+        Log.d("item",order.product.images.toString())
         val data = hashMapOf(
             "userId" to order.userId,
             "product" to order.product,
@@ -48,19 +51,31 @@ class OrderRepository(
         return querySnapshot.mapNotNull { doc ->
             try {
                 val product = doc.get("product") as? Map<String, Any> ?: return@mapNotNull null
+                // Lấy images (dạng List<Map<String, Any>>)
+                val imagesList = product["images"] as? List<Map<String, Any>> ?: emptyList()
+
+// Chuyển từng Map → ProductImage
+                val images = imagesList.mapNotNull { imageMap ->
+                    ProductImage(
+                        imageUrl = imageMap["imageUrl"] as? String ?: "",
+                        isPrimary = imageMap["isPrimary"] as? Boolean ?: false
+                    )
+                }
                 val orderProduct = Product(
                     id = product["id"] as? String ?: "",
                     name = product["name"] as? String ?: "",
-                    price = (product["price"] as? Number)?.toDouble() ?: 0.0
-                    // thêm các field khác nếu có
+                    price = (product["price"] as? Number)?.toDouble() ?: 0.0,
+                    images = images
                 )
-
+                Log.d("order", orderProduct.images.toString())
                 Order(
                     id = doc.id,
                     userId = doc.getString("userId") ?: "",
                     product = orderProduct,
                     quantity = (doc.getLong("quantity") ?: 0).toInt(),
-                    status = OrderStatus.valueOf(doc.getString("status") ?: OrderStatus.IN_DELIVERY.name),
+                    status = OrderStatus.valueOf(
+                        doc.getString("status") ?: OrderStatus.IN_DELIVERY.name
+                    ),
                     totalPrice = (doc.getDouble("totalPrice") ?: 0.0),
                     createdAt = doc.getTimestamp("createdAt")
                 )

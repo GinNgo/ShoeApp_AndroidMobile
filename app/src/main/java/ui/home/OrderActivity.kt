@@ -4,32 +4,33 @@ import adapter.GridOrderItemAdapter
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.GridView
+import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.shoesapp.R
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.launch
 import model.Order.Order
 import model.Order.OrderStatus
+import model.Product
 import service.IOrderService
 import service.OrderServiceImpl
 import ui.BaseActivity
 
 class OrderActivity : BaseActivity() {
-
     private lateinit var orderItems: MutableList<Order>
     private lateinit var gridOrderItemAdapter: GridOrderItemAdapter
     private lateinit var orderServiceImpl: IOrderService
     private var userId: String? = null
-
     private lateinit var gridView: GridView
     private lateinit var emptyStateLayout: LinearLayout
-
-    // Tabs
     private lateinit var tabOngoing: TextView
     private lateinit var tabCompleted: TextView
     private lateinit var tabIndicator: View
@@ -57,7 +58,7 @@ class OrderActivity : BaseActivity() {
                 if(order.status == OrderStatus.IN_DELIVERY){
                     Toast.makeText(this, "Tracking order: ${order.id}", Toast.LENGTH_SHORT).show()
                 }else if (order.status == OrderStatus.COMPLETE){
-                    Toast.makeText(this, "Review order: ${order.id}", Toast.LENGTH_SHORT).show()
+                    showReviewDialog(order)
                 }
             }
         )
@@ -112,5 +113,42 @@ class OrderActivity : BaseActivity() {
                 emptyStateLayout.visibility = View.GONE
             }
         }
+    }
+
+    private fun showReviewDialog(o: Order) {
+        val dialog = BottomSheetDialog(this)
+        val view = layoutInflater.inflate(R.layout.leave_review_popup, null)
+        dialog.setContentView(view)
+
+        // Tìm các view
+        val tvProductName = view.findViewById<TextView>(R.id.review_name)
+        val tvPrice = view.findViewById<TextView>(R.id.reviewPrice)
+        val tvQuantity = view.findViewById<TextView>(R.id.review_quantity)
+        val tvImg = view.findViewById<ImageView>(R.id.review_img)
+        val etReview = view.findViewById<EditText>(R.id.etReview)
+        val ratingBar = view.findViewById<RatingBar>(R.id.ratingBar)
+        val btnCancel = view.findViewById<Button>(R.id.btnCancel)
+        val btnSubmit = view.findViewById<Button>(R.id.btnSubmit)
+
+        // Cập nhật dữ liệu
+        tvProductName.text = o.product.name
+        tvQuantity.text = "Color | Size = 40 | Qty = ${o.quantity}"
+        tvPrice.text = "$${o.product.price * o.quantity}"
+
+        val resId = o.product.getPrimaryImageResId(this)
+        tvImg.setImageResource(if (resId != 0) resId else R.drawable.no_image)
+
+        // Xử lý nút
+        btnCancel.setOnClickListener { dialog.dismiss() }
+
+        btnSubmit.setOnClickListener {
+            val rating = ratingBar.rating
+            val review = etReview.text.toString()
+            // Xử lý dữ liệu ở đây
+            Toast.makeText(this, "Rating: $rating\nReview: $review", Toast.LENGTH_SHORT).show()
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 }

@@ -2,7 +2,9 @@ package ui.home
 
 import adapter.GridCartAdapter
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.GridView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -13,7 +15,11 @@ import com.example.shoesapp.R
 import kotlinx.coroutines.launch
 import model.CartItem
 import model.CustomBottomSheetDialog
+import model.Order.Order
+import model.Order.OrderStatus
 import service.CartServiceImpl
+import service.IOrderService
+import service.OrderServiceImpl
 import service.ProductService
 import ui.BaseActivity
 
@@ -26,6 +32,10 @@ class CartActivity : BaseActivity() {
     private var userId: String? = null
     private lateinit var emptyStateLayout: LinearLayout
 
+    private lateinit var btnCheckout: Button
+
+    private lateinit var orderServiceImpl: IOrderService
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -35,6 +45,8 @@ class CartActivity : BaseActivity() {
         cartItems = mutableListOf()
         productService = ProductService()
         cartService = CartServiceImpl()
+        orderServiceImpl = OrderServiceImpl()
+        btnCheckout = findViewById<Button>(R.id.btnCheckout)
 
         val gridView = findViewById<GridView>(R.id.grid_view)
         emptyStateLayout = findViewById(R.id.empty_state_layout)
@@ -130,6 +142,54 @@ class CartActivity : BaseActivity() {
             } else {
                 gridView.visibility = View.VISIBLE
                 emptyStateLayout.visibility = View.GONE
+            }
+        }
+
+        btnCheckout.setOnClickListener {
+            // get product and quantity in cartItems -> createOrder
+            lifecycleScope.launch {
+                try {
+                    if (cartItems.isEmpty()) {
+                        Toast.makeText(this@CartActivity, "Giỏ hàng trống!", Toast.LENGTH_SHORT).show()
+                        return@launch
+                    }
+
+                    // 2. Tạo danh sách Order từ CartItem
+                    val orders = cartItems.map { cartItem ->
+                        Log.d("item",cartItem.product.images.toString())
+                        Order(
+                            userId = getUserIdFromSession().toString(), // ← Hàm lấy UID
+                            product = cartItem.product,
+                            quantity = cartItem.quantity,
+                            status = OrderStatus.IN_DELIVERY,
+                            totalPrice = cartItem.product.price * cartItem.quantity
+                        )
+                    }
+
+                    // 3. Gọi createOrder cho từng đơn
+                    orders.forEach { order ->
+                        orderServiceImpl.createOrder(order) // ← Hàm suspend của bạn
+                        cartService.removeProductFromCart(getUserIdFromSession().toString(), order.product.id)
+                    }
+
+                    // 4. Thành công → Xóa giỏ hàng + thông báo
+                    cartItems.clear()
+                    gridAdapter.notifyDataSetChanged()
+                    updateTotalPrice()
+
+                    // Toggle GridView / EmptyState
+                    if (cartItems.isEmpty()) {
+                        gridView.visibility = View.GONE
+                        emptyStateLayout.visibility = View.VISIBLE
+                    } else {
+                        gridView.visibility = View.VISIBLE
+                        emptyStateLayout.visibility = View.GONE
+                    }
+                    Toast.makeText(this@CartActivity, "Đặt hàng thành công!", Toast.LENGTH_LONG).show()
+
+                } catch (e: Exception) {
+                    Toast.makeText(this@CartActivity, "Lỗi: ${e.message}", Toast.LENGTH_LONG).show()
+                }
             }
         }
 
