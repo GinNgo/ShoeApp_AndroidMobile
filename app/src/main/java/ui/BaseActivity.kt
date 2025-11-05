@@ -6,6 +6,7 @@ import com.example.shoesapp.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import service.serviceImplement.UserService
 import ui.cart.CartActivity
+import ui.favorite.FavoriteActivity
 import ui.home.HomeActivity
 import ui.home.OrderActivity
 import utils.SessionManager
@@ -31,7 +32,11 @@ abstract class BaseActivity : AppCompatActivity() {
                     startActivity(intent)
                     true
                 }
-
+                R.id.nav_wishlist -> {
+                    val intent = Intent(this, FavoriteActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
                 R.id.nav_order -> {
                     val intent = Intent(this, OrderActivity::class.java)
                     startActivity(intent)

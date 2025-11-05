@@ -102,7 +102,9 @@
         <activity
             android:name="ui.admin.order.AdminOrderActivity"
             android:exported="false" />
-
+        <activity
+            android:name="ui.favorite.FavoriteActivity"
+            android:exported="false" />
 
     </application>
 

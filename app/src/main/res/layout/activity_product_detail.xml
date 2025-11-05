@@ -19,7 +19,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#E9E9E9" />
-
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayoutIndicator"
             android:layout_width="wrap_content"
@@ -32,7 +31,6 @@
             app:tabBackground="@drawable/tab_selector"
             app:tabIndicatorHeight="0dp"
             app:tabGravity="center"/>
-
         <ImageButton
             android:id="@+id/btnBack"
             android:layout_width="40dp"
@@ -66,6 +64,7 @@
         android:elevation="10dp"
         tools:visibility="visible"/>
 
+
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="0dp"
@@ -92,7 +91,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btnFavorite"
                 tools:text="Suga Leather Shoes (Tên sản phẩm có thể rất dài và xuống 2 dòng)"/>
-
             <ImageButton
                 android:id="@+id/btnFavorite"
                 android:layout_width="40dp"
@@ -101,7 +99,6 @@
                 android:src="@drawable/ic_favorite_border"
                 app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
                 tools:ignore="ContentDescription" />
-
             <androidx.constraintlayout.widget.Barrier
                 android:id="@+id/barrierTopRow"
                 android:layout_width="wrap_content"
@@ -109,17 +106,14 @@
                 app:barrierDirection="bottom"
                 app:constraint_referenced_ids="txtTitle, btnFavorite" />
             <TextView
-            android:id="@+id/txtOriginalPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp" android:textColor="@android:color/darker_gray"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-
-            app:layout_constraintTop_toBottomOf="@id/barrierTopRow"
-
-            tools:text="3.000.000đ" />
-
+                android:id="@+id/txtOriginalPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp" android:textColor="@android:color/darker_gray"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/barrierTopRow"
+                tools:text="3.000.000đ" />
             <TextView
                 android:id="@+id/txtSalePrice"
                 android:layout_width="wrap_content"
@@ -129,12 +123,8 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@id/txtOriginalPrice"
-
                 app:layout_constraintBaseline_toBaselineOf="@id/txtOriginalPrice"
-
                 tools:text="2.599.000đ" />
-
-
             <LinearLayout
                 android:id="@+id/linearLayoutSold"
                 android:layout_width="wrap_content"
@@ -159,7 +149,6 @@
                     android:textSize="12sp"
                     android:textColor="@android:color/darker_gray"/>
             </LinearLayout>
-
             <TextView
                 android:id="@+id/txtDescription"
                 android:layout_width="0dp"
@@ -181,7 +170,6 @@
                 app:layout_constraintTop_toBottomOf="@id/txtDescription"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginTop="16dp" />
-
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/chipGroupColor"
                 android:layout_width="0dp"
@@ -192,7 +180,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:singleSelection="true"
                 app:chipSpacingHorizontal="8dp"/>
-
             <TextView
                 android:id="@+id/txtSizeLabel"
                 android:layout_width="wrap_content"
@@ -202,7 +189,6 @@
                 app:layout_constraintTop_toBottomOf="@id/chipGroupColor"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginTop="16dp" />
-
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/chipGroupSize"
                 android:layout_width="0dp"
@@ -213,7 +199,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:singleSelection="true"
                 app:chipSpacingHorizontal="8dp"/>
-
             <TextView
                 android:id="@+id/txtStockInfo"
                 android:layout_width="wrap_content"
@@ -224,7 +209,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/chipGroupSize"
                 tools:text="Chỉ còn 5 sản phẩm" />
-
             <LinearLayout
                 android:id="@+id/layoutQuantity"
                 android:layout_width="wrap_content"
@@ -242,6 +226,7 @@
                     android:text="Số lượng"
                     android:textStyle="bold"
                     android:layout_marginEnd="14dp"/>
+
                 <LinearLayout
                     android:id="@+id/layoutQuantityUpdate"
                     android:layout_width="wrap_content"
@@ -250,6 +235,7 @@
                     android:gravity="center_vertical"
                     android:background="@drawable/bg_quantity"
                     android:padding="4dp">
+
                     <ImageButton
                         android:id="@+id/btnMinus"
                         android:layout_width="30dp"
@@ -257,6 +243,7 @@
                         android:src="@drawable/ic_minus"
                         android:background="@drawable/bg_quantity"
                         app:tint="@android:color/black" />
+
                     <TextView
                         android:id="@+id/txtQuantity"
                         android:layout_width="wrap_content"
@@ -264,6 +251,7 @@
                         android:text="1"
                         android:textSize="18sp"
                         android:layout_marginHorizontal="12dp" />
+
                     <ImageButton
                         android:id="@+id/btnPlus"
                         android:layout_width="30dp"
@@ -273,13 +261,53 @@
                         app:tint="@android:color/black" />
                 </LinearLayout>
             </LinearLayout>
+
+
+            <View
+                android:id="@+id/dividerRelated"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="#E0E0E0"
+                android:layout_marginTop="24dp"
+                app:layout_constraintTop_toBottomOf="@id/layoutQuantity"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/txtRelatedLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sản phẩm liên quan"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/dividerRelated"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerRelatedProducts"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/txtRelatedLabel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:listitem="@layout/item_product_related"
+                tools:itemCount="3"/>
+
+
             <View
                 android:id="@+id/dividerReviews"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:background="#E0E0E0"
                 android:layout_marginTop="24dp"
-                app:layout_constraintTop_toBottomOf="@id/layoutQuantity"
+
+                app:layout_constraintTop_toBottomOf="@id/recyclerRelatedProducts"
+
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
@@ -313,15 +341,16 @@
                 android:layout_marginTop="8dp"
                 android:nestedScrollingEnabled="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+
                 app:layout_constraintTop_toBottomOf="@id/tvEmptyReviews"
+
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                    tools:listitem="@layout/item_feedback"
-                tools:itemCount="2" />
+                tools:listitem="@layout/item_feedback"
+                tools:itemCount="2"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
-
     <LinearLayout
         android:id="@+id/layoutBottom"
         android:layout_width="0dp"
@@ -369,5 +398,4 @@
             android:paddingVertical="12dp"
             app:icon="@drawable/ic_cart" />
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

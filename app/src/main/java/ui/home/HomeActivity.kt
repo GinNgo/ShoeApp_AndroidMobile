@@ -35,6 +35,7 @@ import service.serviceImplement.UserService
 import ui.BaseActivity
 import ui.auth.LoginActivity
 import ui.auth.ProfileActivity
+import ui.favorite.FavoriteActivity
 import ui.product.ProductDetailActivity
 import utils.SessionManager
 import java.io.File
@@ -59,7 +60,7 @@ class HomeActivity : BaseActivity() {
     private lateinit var tvEmptyView: TextView
     private lateinit var layoutUserInfo: LinearLayout // ⭐️ (THÊM)
     private lateinit var btnLogin: Button // ⭐️ (THÊM)
-
+    private lateinit var btnWishlist: ImageView
     // --- Adapters & Data ---
     private lateinit var productAdapter: ProductAdapter
     private var allProductsList = ArrayList<Product>()
@@ -99,7 +100,7 @@ class HomeActivity : BaseActivity() {
         logoutButton = findViewById(R.id.ic_logout)
         tvGreeting = findViewById(R.id.tvGreeting)
         tvEmptyView = findViewById(R.id.tvEmptyView)
-
+        btnWishlist = findViewById(R.id.btnWishlist)
         // ⭐️ (THÊM) Ánh xạ các view mới
         layoutUserInfo = findViewById(R.id.layoutUserInfo)
         btnLogin = findViewById(R.id.btnLogin)
@@ -295,7 +296,9 @@ class HomeActivity : BaseActivity() {
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(intent)
         }
-
+        btnWishlist.setOnClickListener {
+            startActivity(Intent(this, FavoriteActivity::class.java))
+        }
         profileImage.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)

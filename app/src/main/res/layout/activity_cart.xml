@@ -114,7 +114,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/black"
-            android:text="Thanh toán →"
+            android:text="Đặt hàng →"
             android:textColor="@color/white"
             android:paddingLeft="24dp"
             android:paddingRight="24dp"

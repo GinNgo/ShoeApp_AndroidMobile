@@ -164,4 +164,12 @@ class FirestoreBase(private val db: FirebaseFirestore = FirebaseFirestore.getIns
             emptyList()
         }
     }
+    suspend fun setData(
+        collectionPath: String,
+        documentId: String,
+        data: Map<String, Any?>
+    ) {
+        db.collection(collectionPath).document(documentId).set(data).await()
+        Log.d("FirestoreBase", "✅ Set data for $collectionPath/$documentId")
+    }
 }

@@ -2,10 +2,13 @@ package ui.product
 
 import adapter.FeedBackAdapter
 import adapter.ImageSliderAdapter
+import adapter.RelatedProductAdapter
 import android.annotation.SuppressLint
-import android.content.res.ColorStateList // ⭐️ Import
-import android.graphics.Color
+import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color // ⭐️ (THÊM)
 import android.graphics.Paint
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -16,6 +19,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.shoesapp.R
@@ -30,10 +34,13 @@ import model.Product
 import model.ProductColor
 import model.ProductImage
 import model.ProductSize
+import service.IFavoriteService // ⭐️ (THÊM)
 import service.serviceImplement.CartService
 import service.serviceImplement.FeedBackService
+import service.serviceImplement.FavoriteService// ⭐️ (THÊM)
 import service.serviceImplement.ProductService
 import ui.BaseActivity
+import java.io.File // ⭐️ (THÊM)
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -51,36 +58,43 @@ class ProductDetailActivity : BaseActivity() {
     private lateinit var txtPrice: TextView
     private lateinit var txtStockInfo: TextView
     private lateinit var txtOutOfStockOverlay: TextView
-    private lateinit var btnFavorite: ImageButton
+    private lateinit var btnFavorite: ImageButton // ⭐️ View này đã có
     private lateinit var btnMinus: ImageButton
     private lateinit var btnPlus: ImageButton
     private lateinit var btnAddToCart: Button
     private lateinit var btnBack: ImageButton
     private lateinit var viewPagerImageSlider: ViewPager2
     private lateinit var tabLayoutIndicator: TabLayout
-    // --- Adapters ---
-    private lateinit var imageAdapter: ImageSliderAdapter
-    private lateinit var feedBackAdapter: FeedBackAdapter // ⭐️ (THÊM)
-    private var feedbackList = mutableListOf<FeedBack>()
     private lateinit var chipGroupColor: ChipGroup
     private lateinit var chipGroupSize: ChipGroup
-    private lateinit var recyclerReviews: RecyclerView // ⭐️ (THÊM)
-    private lateinit var tvEmptyReviews: TextView // ⭐️ (THÊM)
+    private lateinit var recyclerReviews: RecyclerView
+    private lateinit var tvEmptyReviews: TextView
+    private lateinit var recyclerRelatedProducts: RecyclerView
+
     // --- Services ---
     private val cartService =  CartService()
     private val productService = ProductService()
     private val feedBackService = FeedBackService()
+    private val favoriteService: IFavoriteService = FavoriteService() // ⭐️ (THÊM)
     private val formatter = NumberFormat.getCurrencyInstance(Locale("vi", "VN"))
+
+    // --- Adapters ---
+    private lateinit var imageAdapter: ImageSliderAdapter
+    private lateinit var feedBackAdapter: FeedBackAdapter
+    private lateinit var relatedProductAdapter: RelatedProductAdapter
+    private var feedbackList = mutableListOf<FeedBack>()
+    private var relatedProductList = mutableListOf<Product>()
 
     // --- State (Trạng thái) ---
     private var currentProduct: Product? = null
+    private var currentUserId: String? = null // ⭐️ (THÊM)
     private var selectedColor: ProductColor? = null
     private var selectedSize: ProductSize? = null
     private var quantity = 1
     private var currentStock = 0
     private var unitPrice = 0.0
     private var totalPrice = 0.0
-
+    private var isFavorite = false // ⭐️ (THÊM) Trạng thái yêu thích
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,29 +103,40 @@ class ProductDetailActivity : BaseActivity() {
 
         initViews()
         setupListeners()
+        setupRelatedProductRecyclerView()
 
-
-        // ⭐️ (SỬA LỖI 1) Đã đổi key thành "product_id"
         val productId = intent.getStringExtra("product_id")
         if (productId.isNullOrEmpty()) {
             Toast.makeText(this, "ID sản phẩm không hợp lệ", Toast.LENGTH_SHORT).show()
             finish()
             return
         }
-        loadProductFromDatabase(productId)
-        loadFeedbacks(productId)
+
+        // ⭐️ (SỬA) Tải User ID trước
+        lifecycleScope.launch {
+            currentUserId = getUserIdFromSession() // Lấy UserID
+
+            // Sau khi có UserID, mới tải Product và Favorite
+            loadProductFromDatabase(productId)
+            loadFeedbacks(productId)
+            loadRelatedProducts(productId)
+
+            if (currentUserId != null) {
+                loadFavoriteStatus(currentUserId!!, productId) // ⭐️ Tải trạng thái Yêu thích
+            }
+        }
     }
+
     private fun loadFeedbacks(productId: String) {
         lifecycleScope.launch {
             val feedbacks = feedBackService.getFeedbacksForProduct(productId)
             feedbackList.clear()
             feedbackList.addAll(feedbacks)
-
-            // Cập nhật UI
             setupFeedbackRecyclerView()
             updateRatingUI(feedbacks)
         }
     }
+
     private fun loadProductFromDatabase(productId: String) {
         lifecycleScope.launch {
             val product = productService.getProductById(productId)
@@ -122,6 +147,39 @@ class ProductDetailActivity : BaseActivity() {
             }
             currentProduct = product
             displayProductData(product)
+        }
+    }
+
+    private fun loadRelatedProducts(currentProductId: String) {
+        lifecycleScope.launch {
+            val allProducts = productService.getAllProducts()
+            val related = allProducts.filter { it.id != currentProductId }
+            relatedProductList.clear()
+            relatedProductList.addAll(related.shuffled().take(5))
+            relatedProductAdapter.notifyDataSetChanged()
+        }
+    }
+
+    /**
+     * ⭐️ (MỚI) Kiểm tra xem SP này đã được yêu thích chưa
+     */
+    private fun loadFavoriteStatus(userId: String, productId: String) {
+        lifecycleScope.launch {
+            isFavorite = favoriteService.isFavorite(userId, productId)
+            updateFavoriteButtonUI() // Cập nhật icon
+        }
+    }
+
+    /**
+     * ⭐️ (MỚI) Cập nhật icon trái tim
+     */
+    private fun updateFavoriteButtonUI() {
+        if (isFavorite) {
+            btnFavorite.setImageResource(R.drawable.ic_favorite) // 👈 Ảnh trái tim ĐẦY
+            btnFavorite.setColorFilter(Color.RED) // 👈 Tô màu đỏ
+        } else {
+            btnFavorite.setImageResource(R.drawable.ic_favorite_border) // 👈 Ảnh trái tim RỖNG
+            btnFavorite.clearColorFilter() // 👈 Bỏ tô màu
         }
     }
 
@@ -147,12 +205,12 @@ class ProductDetailActivity : BaseActivity() {
         chipGroupSize = findViewById(R.id.chipGroupSize)
         recyclerReviews = findViewById(R.id.recyclerReviews)
         tvEmptyReviews = findViewById(R.id.tvEmptyReviews)
+        recyclerRelatedProducts = findViewById(R.id.recyclerRelatedProducts)
     }
 
     private fun displayProductData(product: Product) {
         txtTitle.text = product.name
         txtDescription.text = product.description
-//        txtRating.text = "⭐ 4.7 (5,387 reviews)"
         txtSold.text = "Đã bán ${product.soldCount}"
         unitPrice = product.getDisplayPrice()
         updateTotalPrice()
@@ -176,6 +234,7 @@ class ProductDetailActivity : BaseActivity() {
         }
         setupColorChips(product.colors)
     }
+
     private fun setupFeedbackRecyclerView() {
         if (feedbackList.isEmpty()) {
             recyclerReviews.visibility = View.GONE
@@ -187,6 +246,18 @@ class ProductDetailActivity : BaseActivity() {
             tvEmptyReviews.visibility = View.GONE
         }
     }
+
+    private fun setupRelatedProductRecyclerView() {
+        relatedProductAdapter = RelatedProductAdapter(this, relatedProductList) { product ->
+            val intent = Intent(this, ProductDetailActivity::class.java)
+            intent.putExtra("product_id", product.id)
+            startActivity(intent)
+        }
+        recyclerRelatedProducts.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        recyclerRelatedProducts.adapter = relatedProductAdapter
+    }
+
     @SuppressLint("SetTextI18n")
     private fun updateRatingUI(feedbacks: List<FeedBack>) {
         if (feedbacks.isEmpty()) {
@@ -197,6 +268,7 @@ class ProductDetailActivity : BaseActivity() {
             txtRating.text = "⭐ ${"%.1f".format(avgRating)} ($count đánh giá)"
         }
     }
+
     private fun setupListeners() {
         btnBack.setOnClickListener {
             finish()
@@ -217,15 +289,38 @@ class ProductDetailActivity : BaseActivity() {
                 updateQuantityAndPrice()
             }
         }
-        var isFavorite = false
+
+        // ⭐️ (SỬA LẠI) Logic nút Yêu thích
         btnFavorite.setOnClickListener {
+            if (currentUserId == null) {
+                Toast.makeText(this, "Vui lòng đăng nhập để yêu thích", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (currentProduct == null) return@setOnClickListener
+
+            // 1. Đảo ngược trạng thái
             isFavorite = !isFavorite
-            btnFavorite.setImageResource(
-                if (isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border
-            )
+            // 2. Cập nhật UI ngay lập tức
+            updateFavoriteButtonUI()
+
+            // 3. Gọi service trong nền
+            lifecycleScope.launch {
+                val success: Boolean
+                if (isFavorite) {
+                    success = favoriteService.addFavorite(currentUserId!!, currentProduct!!.id)
+                } else {
+                    success = favoriteService.removeFavorite(currentUserId!!, currentProduct!!.id)
+                }
+
+                // (Tùy chọn: Kiểm tra nếu service thất bại thì đảo ngược lại)
+                if (!success) {
+                    Log.e("Favorite", "Lỗi khi cập nhật Favorite")
+                    // isFavorite = !isFavorite // Đảo ngược lại
+                    // updateFavoriteButtonUI()
+                }
+            }
         }
 
-        // ⭐️⭐️ (CẬP NHẬT HOÀN TOÀN LOGIC NÀY) ⭐️⭐️
         btnAddToCart.setOnClickListener {
             if (selectedColor == null || selectedSize == null) {
                 Toast.makeText(this, "Vui lòng chọn màu sắc và size", Toast.LENGTH_SHORT).show()
@@ -237,8 +332,8 @@ class ProductDetailActivity : BaseActivity() {
             }
 
             lifecycleScope.launch {
-                val userId = getUserIdFromSession()
-                if (userId == null) {
+                // (SỬA) Dùng biến 'currentUserId' đã tải ở onCreate
+                if (currentUserId == null) {
                     Toast.makeText(
                         this@ProductDetailActivity,
                         "Bạn chưa đăng nhập",
@@ -246,35 +341,26 @@ class ProductDetailActivity : BaseActivity() {
                     ).show()
                     return@launch
                 }
+
                 val primaryImageName = when {
-                    // Ưu tiên 1: Trường primaryImageUrl (nếu có)
                     currentProduct!!.primaryImageUrl.isNotBlank() -> currentProduct!!.primaryImageUrl
-
-                    // Ưu tiên 2: Ảnh có cờ isPrimary = true trong list images
                     else -> currentProduct!!.images.firstOrNull { it.isPrimary }?.imageUrl
-
-                    // Ưu tiên 3: Ảnh đầu tiên trong list images
                         ?: currentProduct!!.images.firstOrNull()?.imageUrl
-
-                        // Ưu tiên 4: Ảnh dự phòng
                         ?: "no_image"
                 }
-                // 1. Tạo đối tượng CartItem
+
                 val newItem = CartItem(
-                    userId = userId,
+                    userId = currentUserId!!,
                     productId = currentProduct!!.id,
                     productName = currentProduct!!.name,
-                    productImage = primaryImageName, // 👈 Lưu tên ảnh
+                    productImage = primaryImageName,
                     selectedColor = selectedColor!!.name,
                     selectedSize = selectedSize!!.size,
                     quantity = quantity,
                     price = currentProduct!!.price,
                     salePrice = currentProduct!!.salePrice
                 )
-
-                // 2. Gọi service mới
                 val success = cartService.addItemToCart(newItem)
-
                 if (success) {
                     val toastMessage =
                         "Đã thêm: ${selectedColor!!.name} - Size ${selectedSize!!.size} (SL: $quantity)"
@@ -290,12 +376,11 @@ class ProductDetailActivity : BaseActivity() {
             }
         }
     }
+
     private fun setupImageSlider(images: List<ProductImage>) {
         val displayImages = images.ifEmpty { listOf(ProductImage("no_image", true)) }
-
         imageAdapter = ImageSliderAdapter(this, displayImages)
         viewPagerImageSlider.adapter = imageAdapter
-
         TabLayoutMediator(tabLayoutIndicator, viewPagerImageSlider) { tab, position ->
             tab.text = null
             tab.icon = null
@@ -362,7 +447,6 @@ class ProductDetailActivity : BaseActivity() {
         }
     }
 
-    // ⭐️ (ĐÂY LÀ PHIÊN BẢN ĐÚNG CỦA createSizeChip)
     private fun createSizeChip(size: ProductSize): Chip {
         val isSizeOutOfStock = size.stockQuantity == 0
 
@@ -394,8 +478,6 @@ class ProductDetailActivity : BaseActivity() {
         }
         return chip
     }
-
-    // ⭐️ (SỬA LỖI 2) Hàm trùng lặp đã bị xóa
 
     private fun onSizeSelected(size: ProductSize) {
         selectedSize = size
