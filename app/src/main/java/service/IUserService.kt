@@ -1,6 +1,8 @@
 package service
 
 import android.net.Uri
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import model.User
 
 interface IUserService {
@@ -10,5 +12,5 @@ interface IUserService {
     suspend fun updateUser(userId: String, updates: Map<String, Any?>): Boolean
     suspend fun deleteUser(id: String): Boolean
     suspend fun uploadAvatar(userId: String, imageUri: Uri): String?
-    // ... (Thêm các hàm khác nếu cần)
+    suspend fun getUserById(id: String): User?
 }

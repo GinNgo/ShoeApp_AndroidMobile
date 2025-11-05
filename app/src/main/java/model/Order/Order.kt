@@ -2,6 +2,7 @@ package model
 
 import com.google.firebase.Timestamp
 import java.io.Serializable
+import java.util.Date
 
 // ⭐️ Dùng lại file này cho cả 'OrderActivity' của bạn
 enum class OrderStatus {
@@ -23,7 +24,8 @@ data class OrderItem(
     val selectedSize: String = "",
     var quantity: Int = 1,
     var unitPrice: Double = 0.0,
-    var isReviewed: Boolean = false
+    var isReviewed: Boolean = false,
+    val createdAt: Timestamp = Timestamp(Date(1990,1,1))
 ) : Serializable {
     fun getTotalPrice(): Double = unitPrice * quantity
 }

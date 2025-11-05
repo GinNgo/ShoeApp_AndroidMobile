@@ -8,6 +8,7 @@ import model.Order
 import model.OrderItem // ⭐️ (THÊM)
 import model.OrderStatus
 import repository.IOrderRepository
+import java.util.Date
 
 class OrderRepository(
     private val firestore: FirestoreBase = FirestoreBase(),
@@ -36,7 +37,7 @@ class OrderRepository(
                     selectedSize = itemMap["selectedSize"] as? String ?: "",
                     quantity = (itemMap["quantity"] as? Long)?.toInt() ?: 0,
                     unitPrice = itemMap["unitPrice"] as? Double ?: 0.0,
-
+                    createdAt = itemMap["createdAt"] as? Timestamp ?: Timestamp.now(),
                     // ⭐️⭐️ ĐÂY LÀ DÒNG SỬA LỖI CỦA BẠN ⭐️⭐️
                     // Nó sẽ đọc 'isReviewed' từ DB (là true)
                     // Nếu không tìm thấy, nó mới là 'false'
@@ -115,7 +116,36 @@ class OrderRepository(
             false
         }
     }
+    /**
+     * ⭐️ (THÊM MỚI) Lấy TẤT CẢ đơn hàng (cho Admin)
+     */
+    override suspend fun getAllOrdersAdmin(): List<Order> {
+        return try {
+            val docs = firestore.getAll(collectionPath)
+            docs.mapNotNull { it.toOrder() }
+        } catch (e: Exception) {
+            Log.e("OrderRepository", "Lỗi lấy tất cả Orders: ${e.message}", e)
+            emptyList()
+        }
+    }
 
+    /**
+     * ⭐️ (THÊM MỚI) Lấy đơn hàng theo khoảng ngày
+     */
+    override suspend fun getOrdersByDateRange(startDate: Date, endDate: Date): List<Order> {
+        return try {
+            // ⭐️ (SỬA) Gọi hàm mới 'getDataWithRangeQuery'
+            val docs = firestore.getDataWithRangeQuery(
+                collectionPath,
+                Pair("createdAt", ">=" to Timestamp(startDate)),
+                Pair("createdAt", "<=" to Timestamp(endDate))
+            )
+            docs.mapNotNull { it.toOrder() }
+        } catch (e: Exception) {
+            Log.e("OrderRepository", "Lỗi lấy Orders theo ngày: ${e.message}", e)
+            emptyList()
+        }
+    }
     // ⭐️ (SỬA) Hàm toHashMap (Đã đúng, chỉ cần đảm bảo 'isReviewed' có ở đây)
     private fun Order.toHashMap(): HashMap<String, Any?> {
         return hashMapOf(
@@ -140,5 +170,15 @@ class OrderRepository(
                 )
             }
         )
+    }
+    override suspend fun getOrdersByStatusAdmin(status: OrderStatus): List<Order> {
+        return try {
+            // ⭐️ Gọi FirestoreBase, lọc theo 'status'
+            val docs = firestore.getListBy(collectionPath, "status", status.name)
+            docs.mapNotNull { it.toOrder() }
+        } catch (e: Exception) {
+            Log.e("OrderRepository", "Lỗi lấy Orders theo Status (Admin): ${e.message}", e)
+            emptyList()
+        }
     }
 }

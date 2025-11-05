@@ -52,36 +52,36 @@
             android:drawableTint="#9B9999"
             tools:ignore="HardcodedText,TextFields"
             android:layout_marginTop="10dp"
-            />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            android:gravity="center_horizontal"
-            >
+
+            android:inputType="textPassword" /> <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        >
         <CheckBox
-            android:layout_width="48dp"
+            android:id="@+id/cbRememberMe" android:layout_width="48dp"
             android:layout_height="48dp"
             />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/remember_me"
-                >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/remember_me"
+            >
 
-            </TextView>
+        </TextView>
 
-        </LinearLayout>
-            <Button
-                android:id="@+id/btnLogin"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_marginTop="10dp"
+    </LinearLayout>
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
 
-                android:text="@string/sign_in"
-                android:textStyle="bold"
-                android:backgroundTint="@color/black"/>
+            android:text="@string/sign_in"
+            android:textStyle="bold"
+            android:backgroundTint="@color/black"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -113,6 +113,4 @@
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

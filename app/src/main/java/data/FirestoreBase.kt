@@ -130,4 +130,38 @@ class FirestoreBase(private val db: FirebaseFirestore = FirebaseFirestore.getIns
                 cont.resumeWithException(e)
             }
     }
+    /**
+     * ⭐️ (THÊM HÀM MỚI NÀY)
+     * Lấy dữ liệu với truy vấn khoảng (range query)
+     * @param collectionPath Tên collection
+     * @param rangeConditions Danh sách các điều kiện, ví dụ:
+     * Pair("createdAt", ">=" to Timestamp(startDate))
+     */
+    suspend fun getDataWithRangeQuery(
+        collectionPath: String,
+        vararg rangeConditions: Pair<String, Pair<String, Any>>
+    ): List<DocumentSnapshot> {
+        return try {
+            var query: Query = db.collection(collectionPath)
+
+            // Thêm các điều kiện (>, <, >=, <=)
+            for ((field, condition) in rangeConditions) {
+                val operator = condition.first
+                val value = condition.second
+                query = when (operator) {
+                    ">" -> query.whereGreaterThan(field, value)
+                    "<" -> query.whereLessThan(field, value)
+                    ">=" -> query.whereGreaterThanOrEqualTo(field, value)
+                    "<=" -> query.whereLessThanOrEqualTo(field, value)
+                    "==" -> query.whereEqualTo(field, value)
+                    else -> query // Bỏ qua nếu toán tử không hợp lệ
+                }
+            }
+
+            query.get().await().documents
+        } catch (e: Exception) {
+            Log.e("FirestoreBase", "Lỗi getDataWithRangeQuery: ${e.message}", e)
+            emptyList()
+        }
+    }
 }

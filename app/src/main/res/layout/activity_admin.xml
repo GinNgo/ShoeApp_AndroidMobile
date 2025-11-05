@@ -38,447 +38,162 @@
                 android:paddingBottom="12dp"
                 tools:ignore="HardcodedText" />
 
-            <LinearLayout
+            <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2"
-                android:layout_marginBottom="16dp">
+                android:columnCount="2"
+                android:rowCount="4"
+                android:alignmentMode="alignMargins"
+                android:columnOrderPreserved="false"
+                android:useDefaultMargins="true">
 
                 <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="120dp"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="8dp"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="4dp">
+                    style="@style/AdminStatsCard"> <LinearLayout style="@style/AdminStatsLayout">
+                    <TextView style="@style/AdminStatsLabel" android:text="Doanh thu hôm nay" />
+                    <TextView android:id="@+id/tvRevenueToday" style="@style/AdminStatsValue" tools:text="1.500.000đ" />
+                </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="12dp">
-
-                        <TextView
-                            android:id="@+id/tvTotalProductsLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Tổng sản phẩm"
-                            android:textSize="14sp"
-                            tools:ignore="HardcodedText" />
-
-                        <TextView
-                            android:id="@+id/tvTotalProducts"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="—"
-                            android:textSize="28sp"
-                            android:textStyle="bold"
-                            android:layout_marginTop="8dp"
-                            tools:ignore="HardcodedText" />
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/AdminStatsCard">
+                    <LinearLayout style="@style/AdminStatsLayout">
+                        <TextView style="@style/AdminStatsLabel" android:text="Đơn hàng hôm nay" />
+                        <TextView android:id="@+id/tvOrdersToday" style="@style/AdminStatsValue" tools:text="10" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="120dp"
-                    android:layout_weight="1"
-                    android:layout_marginStart="8dp"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="4dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="12dp">
-
-                        <TextView
-                            android:id="@+id/tvTotalOrdersLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Tổng đơn"
-                            android:textSize="14sp"
-                            tools:ignore="HardcodedText" />
-
-                        <TextView
-                            android:id="@+id/tvTotalOrders"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="—"
-                            android:textSize="28sp"
-                            android:textStyle="bold"
-                            android:layout_marginTop="8dp"
-                            tools:ignore="HardcodedText" />
+                    style="@style/AdminStatsCard">
+                    <LinearLayout style="@style/AdminStatsLayout">
+                        <TextView style="@style/AdminStatsLabel" android:text="Tổng doanh thu" />
+                        <TextView android:id="@+id/tvTotalRevenue" style="@style/AdminStatsValue" tools:text="50.000.000đ" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
-            </LinearLayout>
 
-            <LinearLayout
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/AdminStatsCard">
+                    <LinearLayout style="@style/AdminStatsLayout">
+                        <TextView style="@style/AdminStatsLabel" android:text="Tổng đơn hàng" />
+                        <TextView android:id="@+id/tvTotalOrders" style="@style/AdminStatsValue" tools:text="120" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/AdminStatsCard">
+                    <LinearLayout style="@style/AdminStatsLayout">
+                        <TextView style="@style/AdminStatsLabel" android:text="Sản phẩm" />
+                        <TextView android:id="@+id/tvTotalProducts" style="@style/AdminStatsValue" tools:text="75" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/AdminStatsCard">
+                    <LinearLayout style="@style/AdminStatsLayout">
+                        <TextView style="@style/AdminStatsLabel" android:text="Danh mục" />
+                        <TextView android:id="@+id/tvTotalCategories" style="@style/AdminStatsValue" tools:text="8" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/AdminStatsCard">
+                    <LinearLayout style="@style/AdminStatsLayout">
+                        <TextView style="@style/AdminStatsLabel" android:text="Thương hiệu" />
+                        <TextView android:id="@+id/tvTotalBrands" style="@style/AdminStatsValue" tools:text="6" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/AdminStatsCard">
+                    <LinearLayout style="@style/AdminStatsLayout">
+                        <TextView style="@style/AdminStatsLabel" android:text="Voucher" />
+                        <TextView android:id="@+id/tvTotalVouchers" style="@style/AdminStatsValue" tools:text="15" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+            </GridLayout>
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2"
-                android:layout_marginBottom="16dp">
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="120dp"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="8dp"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="4dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="12dp">
-
-                        <TextView
-                            android:id="@+id/tvTotalCategoriesLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Tổng danh mục"
-                            android:textSize="14sp"
-                            tools:ignore="HardcodedText" />
-
-                        <TextView
-                            android:id="@+id/tvTotalCategories"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="—"
-                            android:textSize="28sp"
-                            android:textStyle="bold"
-                            android:layout_marginTop="8dp"
-                            tools:ignore="HardcodedText" />
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="120dp"
-                    android:layout_weight="1"
-                    android:layout_marginStart="8dp"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="4dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="12dp">
-
-                        <TextView
-                            android:id="@+id/tvTotalBrandsLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Tổng thương hiệu"
-                            android:textSize="14sp"
-                            tools:ignore="HardcodedText" />
-                        <TextView
-                            android:id="@+id/tvTotalBrands"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="—"
-                            android:textSize="28sp"
-                            android:textStyle="bold"
-                            android:layout_marginTop="8dp"
-                            tools:ignore="HardcodedText" />
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2"
-                android:layout_marginBottom="16dp">
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="120dp"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="8dp"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="4dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="12dp">
-
-                        <TextView
-                            android:id="@+id/tvTotalVouchersLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Tổng Voucher"
-                            android:textSize="14sp"
-                            tools:ignore="HardcodedText" />
-
-                        <TextView
-                            android:id="@+id/tvTotalVouchers"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="—"
-                            android:textSize="28sp"
-                            android:textStyle="bold"
-                            android:layout_marginTop="8dp"
-                            tools:ignore="HardcodedText" />
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="120dp"
-                    android:layout_weight="1"
-                    android:layout_marginStart="8dp" />
-            </LinearLayout>
-
+                android:text="Quản lý"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginTop="24dp"
+                android:paddingBottom="4dp" />
 
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:columnCount="2"
-                android:rowCount="3" android:alignmentMode="alignMargins"
+                android:rowCount="4" android:alignmentMode="alignMargins"
                 android:columnOrderPreserved="false"
                 android:useDefaultMargins="true">
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardOrders"
+                    style="@style/AdminActionCard"> <LinearLayout style="@style/AdminActionLayout">
+                    <ImageView style="@style/AdminActionIcon" android:src="@drawable/ic_orders" />
+                    <TextView style="@style/AdminActionLabel" android:text="Quản lý Đơn hàng" />
+                    <TextView style="@style/AdminActionDesc" android:text="Duyệt, lọc, đổi trạng thái" />
+                </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardProducts"
-                    android:layout_width="0dp"
-                    android:layout_height="140dp"
-                    android:layout_columnWeight="1"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="6dp"
-                    android:clickable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    tools:ignore="KeyboardInaccessibleWidget">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="12dp">
-                        <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:src="@drawable/ic_products"
-                            app:tint="@color/black"
-                            tools:ignore="ContentDescription" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Quản lý sản phẩm"
-                            android:textStyle="bold"
-                            android:textSize="16sp"
-                            android:layout_marginTop="12dp"
-                            tools:ignore="HardcodedText" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Thêm / Sửa / Xóa sản phẩm"
-                            android:textSize="12sp"
-                            android:layout_marginTop="6dp"
-                            tools:ignore="HardcodedText" />
+                    style="@style/AdminActionCard">
+                    <LinearLayout style="@style/AdminActionLayout">
+                        <ImageView style="@style/AdminActionIcon" android:src="@drawable/ic_products" />
+                        <TextView style="@style/AdminActionLabel" android:text="Quản lý Sản phẩm" />
+                        <TextView style="@style/AdminActionDesc" android:text="Thêm / Sửa / Xóa" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardCategories"
-                    android:layout_width="0dp"
-                    android:layout_height="140dp"
-                    android:layout_columnWeight="1"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="6dp"
-                    android:clickable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    tools:ignore="KeyboardInaccessibleWidget">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="12dp">
-                        <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:src="@drawable/ic_category"
-                            app:tint="@color/black"
-                            tools:ignore="ContentDescription" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Quản lý danh mục"
-                            android:textStyle="bold"
-                            android:textSize="16sp"
-                            android:layout_marginTop="12dp"
-                            tools:ignore="HardcodedText" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Thêm / Sửa / Xóa danh mục"
-                            android:textSize="12sp"
-                            android:layout_marginTop="6dp"
-                            tools:ignore="HardcodedText" />
+                    style="@style/AdminActionCard">
+                    <LinearLayout style="@style/AdminActionLayout">
+                        <ImageView style="@style/AdminActionIcon" android:src="@drawable/ic_category" />
+                        <TextView style="@style/AdminActionLabel" android:text="Quản lý Danh mục" />
+                        <TextView style="@style/AdminActionDesc" android:text="Thêm / Sửa / Xóa" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardBrands"
-                    android:layout_width="0dp"
-                    android:layout_height="140dp"
-                    android:layout_columnWeight="1"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="6dp"
-                    android:clickable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    tools:ignore="KeyboardInaccessibleWidget">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="12dp">
-                        <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:src="@drawable/ic_brand"
-                            app:tint="@color/black"
-                            tools:ignore="ContentDescription" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Quản lý thương hiệu"
-                            android:textStyle="bold"
-                            android:textSize="16sp"
-                            android:layout_marginTop="12dp"
-                            tools:ignore="HardcodedText" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Thêm / Sửa / Xóa thương hiệu"
-                            android:textSize="12sp"
-                            android:layout_marginTop="6dp"
-                            tools:ignore="HardcodedText" />
+                    style="@style/AdminActionCard">
+                    <LinearLayout style="@style/AdminActionLayout">
+                        <ImageView style="@style/AdminActionIcon" android:src="@drawable/ic_brand" />
+                        <TextView style="@style/AdminActionLabel" android:text="Quản lý Thương hiệu" />
+                        <TextView style="@style/AdminActionDesc" android:text="Thêm / Sửa / Xóa" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardVouchers"
-                    android:layout_width="0dp"
-                    android:layout_height="140dp"
-                    android:layout_columnWeight="1"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="6dp"
-                    android:clickable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    tools:ignore="KeyboardInaccessibleWidget">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:src="@drawable/ic_voucher"
-                            app:tint="@color/black"
-                            tools:ignore="ContentDescription" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Quản lý Voucher"
-                            android:textStyle="bold"
-                            android:textSize="16sp"
-                            android:layout_marginTop="12dp"
-                            tools:ignore="HardcodedText" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Tạo, sửa mã giảm giá"
-                            android:textSize="12sp"
-                            android:layout_marginTop="6dp"
-                            tools:ignore="HardcodedText" />
+                    style="@style/AdminActionCard">
+                    <LinearLayout style="@style/AdminActionLayout">
+                        <ImageView style="@style/AdminActionIcon" android:src="@drawable/ic_voucher" />
+                        <TextView style="@style/AdminActionLabel" android:text="Quản lý Voucher" />
+                        <TextView style="@style/AdminActionDesc" android:text="Tạo mã giảm giá" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardRevenue"
-                    android:layout_width="0dp"
-                    android:layout_height="140dp"
-                    android:layout_columnWeight="1"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="6dp"
-                    android:clickable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    tools:ignore="KeyboardInaccessibleWidget">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="12dp">
-                        <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:importantForAccessibility="no"
-                            android:src="@drawable/ic_revenue"
-                            app:tint="@color/black" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Thống kê doanh thu"
-                            android:textStyle="bold"
-                            android:textSize="16sp"
-                            android:layout_marginTop="12dp"
-                            tools:ignore="HardcodedText" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/xem_bi_u_export_csv"
-                            android:textSize="12sp"
-                            android:layout_marginTop="6dp"/>
+                    style="@style/AdminActionCard">
+                    <LinearLayout style="@style/AdminActionLayout">
+                        <ImageView style="@style/AdminActionIcon" android:src="@drawable/ic_revenue" />
+                        <TextView style="@style/AdminActionLabel" android:text="Thống kê Doanh thu" />
+                        <TextView style="@style/AdminActionDesc" android:text="Xem biểu đồ (Chart)" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardUsers"
-                    android:layout_width="0dp"
-                    android:layout_height="140dp"
-                    android:layout_columnWeight="1"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="6dp"
-                    android:clickable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    tools:ignore="KeyboardInaccessibleWidget">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="12dp">
-                        <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:importantForAccessibility="no"
-                            android:src="@drawable/ic_user"
-                            app:tint="@color/black" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Quản lý người dùng"
-                            android:textStyle="bold"
-                            android:textSize="16sp"
-                            android:layout_marginTop="12dp"
-                            tools:ignore="HardcodedText" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Xem, thay đổi quyền"
-                            android:textSize="12sp"
-                            android:layout_marginTop="6dp"
-                            tools:ignore="HardcodedText" />
+                    style="@style/AdminActionCard">
+                    <LinearLayout style="@style/AdminActionLayout">
+                        <ImageView style="@style/AdminActionIcon" android:src="@drawable/ic_user" />
+                        <TextView style="@style/AdminActionLabel" android:text="Quản lý Người dùng" />
+                        <TextView style="@style/AdminActionDesc" android:text="Xem, thay đổi quyền" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 

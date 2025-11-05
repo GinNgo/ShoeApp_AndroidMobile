@@ -25,14 +25,32 @@ class UserService(
     }
 
     override suspend fun addUser(user: User): Boolean = withContext(Dispatchers.IO) {
-        repository.addUser(user)
+        try {
+            // 1. ⭐️ (THÊM) Kiểm tra xem email đã tồn tại chưa
+            val existingUser = repository.getUserByEmail(user.email)
+
+            if (existingUser != null) {
+                // 2. ⭐️ Nếu email đã tồn tại -> Báo thất bại (false)
+                Log.w("UserService", "Email ${user.email} đã tồn tại.")
+                return@withContext false
+            }
+
+            // 3. ⭐️ Nếu email chưa tồn tại -> Thêm user mới
+            return@withContext repository.addUser(user) // Repository đã trả về Boolean
+
+        } catch (e: Exception) {
+            Log.e("UserService", "Lỗi khi thêm user: ${e.message}", e)
+            return@withContext false
+        }
     }
 
     override suspend fun getUserByEmail(email: String): User? = withContext(Dispatchers.IO) {
         repository.getUserByEmail(email)
     }
 
-    // ... (Các hàm khác cũng thêm @Override) ...
+    override suspend fun getUserById(id: String): User? = withContext(Dispatchers.IO) {
+        repository.getUserById(id)
+    }
 
     override suspend fun updateUser(userId: String, updates: Map<String, Any?>): Boolean = withContext(Dispatchers.IO) {
         return@withContext try {
